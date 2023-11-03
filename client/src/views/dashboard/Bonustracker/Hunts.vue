@@ -2,10 +2,9 @@
 import { useModal } from "vue-final-modal";
 import { useUserStore } from "../../../stores/user";
 import { useHuntsStore } from "../../../stores/hunts";
-import UsersIcon from "../../../components/icons/Users.vue";
+import Multiply from "@/components/icons/Multiply.vue";
 import DollarIcon from "../../../components/icons/Dollar.vue";
 import TargetIcon from "../../../components/icons/Target.vue";
-
 import CreateBonusHunt from "../../..//components/modals/CreateBonusHunt.vue";
 
 const userStore = useUserStore();
@@ -36,7 +35,9 @@ const { open: openCreateHunt, close: closeCreateHunt } = useModal({
         class="flex justify-between bg-[#1a1d21] md:w-1/3 w-full p-3 rounded"
       >
         <div>
-          <h1 class="text-lg text-white/70 font-medium mb-1">Best win</h1>
+          <h1 class="text-base text-white/70 font-medium mb-1 uppercase">
+            Best win
+          </h1>
           <span class="text-white text-sm">100$</span>
         </div>
 
@@ -49,11 +50,13 @@ const { open: openCreateHunt, close: closeCreateHunt } = useModal({
         class="flex justify-between bg-[#1a1d21] md:w-1/3 w-full p-3 rounded"
       >
         <div>
-          <h1 class="text-lg text-white/70 font-medium mb-1">Users</h1>
+          <h1 class="text-base text-white/70 font-medium mb-1 uppercase">
+            Best X win
+          </h1>
           <span class="text-white text-sm">5</span>
         </div>
 
-        <UsersIcon
+        <Multiply
           class="bg-[#0094ff]/30 text-2xl p-0.5 rounded text-[#0094ff] mt-1"
         />
       </div>
@@ -62,8 +65,10 @@ const { open: openCreateHunt, close: closeCreateHunt } = useModal({
         class="flex justify-between bg-[#1a1d21] md:w-1/3 w-full p-3 rounded"
       >
         <div>
-          <h1 class="text-lg text-white/70 font-medium mb-1">Bonus hunts</h1>
-          <span class="text-white text-sm">10</span>
+          <h1 class="text-base text-white/70 font-medium mb-1 uppercase">
+            Bonus hunts
+          </h1>
+          <span class="text-white text-sm">1</span>
         </div>
 
         <TargetIcon
@@ -136,13 +141,6 @@ const { open: openCreateHunt, close: closeCreateHunt } = useModal({
                 <i class="bx bx-show-alt text-lg"></i>
               </RouterLink>
               <button><i class="bx bx-trash text-red-500 text-lg"></i></button>
-
-              <button
-                v-if="v.active"
-                class="bg-red-500 px-4 rounded text-white"
-              >
-                STOP
-              </button>
             </td>
           </tr>
         </tbody>

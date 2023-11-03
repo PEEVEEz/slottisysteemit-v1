@@ -12,7 +12,7 @@ import discord from "../utils/discord";
 export const authMiddleware = async (
   req: FastifyRequest,
   reply: FastifyReply,
-  done: HookHandlerDoneFunction
+  _done: HookHandlerDoneFunction
 ) => {
   const token = req.cookies.token;
   if (!token)
@@ -38,5 +38,6 @@ export const authMiddleware = async (
 
   req.user = discordUser;
   req.user._id = user._id;
-  done();
+
+  return;
 };

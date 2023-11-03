@@ -1,4 +1,3 @@
-import ws from "ws";
 import database from "./database";
 import { Server as HttpServer } from "node:http";
 import { Socket, Server as SocketServer } from "socket.io";

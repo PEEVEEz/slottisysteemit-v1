@@ -45,6 +45,8 @@ const emit = defineEmits<{
                 'bg-[#1a1d21] border-none w-full py-1.5 rounded outline-none',
             },
           }"
+          currency="EUR"
+          mode="currency"
           v-model="bet"
         />
       </div>

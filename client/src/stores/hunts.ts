@@ -6,6 +6,7 @@ export interface IBonus {
   game_name: string;
   bet: number;
   payout?: number;
+  index?: number;
 }
 
 export interface IHunt {
@@ -14,6 +15,7 @@ export interface IHunt {
   start: number;
   end?: number;
   active: boolean;
+  redeeming?: boolean;
   bonuses: IBonus[];
 }
 
@@ -32,8 +34,8 @@ export const useHuntsStore = defineStore("hunts", () => {
 
     try {
       const result = await axios.post(
-        "http://localhost:3001/bonus",
-        { huntId, bonus },
+        "http://localhost:3001/hunt/addBonus",
+        { huntId, game_name: bonus.game_name, bet: bonus.bet },
         {
           withCredentials: true,
         }
@@ -42,7 +44,7 @@ export const useHuntsStore = defineStore("hunts", () => {
       if (result.status === 200) {
         const huntIndex = hunts.value.findIndex((v) => v._id == huntId);
         if (huntIndex === null) return;
-        hunts.value[huntIndex].bonuses.push(result.data);
+        hunts.value[huntIndex].bonuses = result.data.bonuses;
       }
     } catch (e) {
       console.log("add bonus error", e);
@@ -53,6 +55,7 @@ export const useHuntsStore = defineStore("hunts", () => {
     loading.value = true;
 
     try {
+      console.log("TEHÄÄS NY SI");
       const result = await axios.post("http://localhost:3001/hunt", data, {
         withCredentials: true,
       });
@@ -69,6 +72,8 @@ export const useHuntsStore = defineStore("hunts", () => {
   };
 
   const init = async () => {
+    if (hunts.value) return;
+
     try {
       const result = await axios.get("http://localhost:3001/hunt", {
         withCredentials: true,

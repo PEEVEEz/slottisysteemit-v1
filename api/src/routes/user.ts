@@ -14,7 +14,7 @@ export const registerUserRoutes = (
     FastifyBaseLogger,
     FastifyTypeProvider
   >,
-  opt: FastifyPluginOptions,
+  _opt: FastifyPluginOptions,
   done: (err?: Error | undefined) => void
 ) => {
   /** @ts-ignore */
