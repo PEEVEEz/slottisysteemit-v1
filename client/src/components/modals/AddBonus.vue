@@ -2,15 +2,29 @@
 import { ref } from "vue";
 import InputText from "primevue/inputtext";
 import InputNumber from "primevue/inputnumber";
+import AutoComplete from "primevue/autocomplete";
 import { VueFinalModal } from "vue-final-modal";
+import axios from "axios";
 
-const name = ref("");
 const bet = ref(0);
+const name = ref("");
+const items = ref<any[]>([]);
 
 const emit = defineEmits<{
   (e: "confirm", gameName: string, bet: number): void;
   (e: "cancel"): void;
 }>();
+
+const handleSearch = async () => {
+  const result = await axios.get(
+    "http://localhost:3001/game/search?name=" + name.value,
+    {
+      withCredentials: true,
+    }
+  );
+
+  items.value = result.data.data.allGames;
+};
 </script>
 <template>
   <VueFinalModal
@@ -20,19 +34,27 @@ const emit = defineEmits<{
     content-transition="vfm-fade"
   >
     <h1 class="text-center text-2xl mb-4">Add bonus</h1>
-    <!-- <slot /> -->
-
     <div class="flex flex-col gap-4 flex-1">
       <div class="flex flex-col gap-1">
         <span>Game name</span>
-        <InputText
+
+        <AutoComplete
           :pt="{
-            root: {
+            input: {
               class:
                 'bg-[#1a1d21] border-none w-full py-1.5 rounded outline-none',
             },
+            panel: {
+              class:
+                'bg-[#1a1d21] border border-white/10 mt-2 rounded text-white overflow-y-auto',
+            },
+            item: {
+              class: 'hover:bg-black/5 cursor-pointer',
+            },
           }"
           v-model="name"
+          :suggestions="items.map((v) => v.name)"
+          @complete="handleSearch"
         />
       </div>
 
@@ -64,7 +86,7 @@ const emit = defineEmits<{
         @click="emit('confirm', name, bet)"
         class="bg-[#0094ff] w-full py-1 text-white rounded"
       >
-        Create
+        Add
       </button>
     </div>
   </VueFinalModal>
