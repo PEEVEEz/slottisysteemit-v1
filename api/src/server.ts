@@ -8,6 +8,7 @@ import { setupSocketServer } from "./socket";
 import { registerAuthRoutes } from "./routes/auth";
 import { registerUserRoutes } from "./routes/user";
 import { registerHuntRoutes } from "./routes/hunt";
+import { registerGameRoutes } from "./routes/game";
 
 declare module "fastify" {
   interface FastifyRequest {
@@ -23,6 +24,7 @@ server.register(cors, {
 });
 server.register(cookie, {});
 
+server.register(registerGameRoutes, { prefix: "game" });
 server.register(registerAuthRoutes, { prefix: "auth" });
 server.register(registerUserRoutes, { prefix: "user" });
 server.register(registerHuntRoutes, { prefix: "hunt" });
