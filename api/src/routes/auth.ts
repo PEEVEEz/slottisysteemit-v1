@@ -65,7 +65,7 @@ export const registerAuthRoutes = (
       });
 
       reply.setCookie("token", token, { path: "/", secure: false });
-      reply.redirect("http://localhost:5173/dashboard");
+      reply.redirect(env.CLIENT_REDIRECT);
     }
   );
 
