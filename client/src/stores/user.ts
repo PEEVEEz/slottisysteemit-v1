@@ -3,6 +3,7 @@ import { ref, computed } from "vue";
 import { defineStore } from "pinia";
 
 export interface IUser {
+  _id: string;
   id: string;
   avatar: string;
   global_name: string;

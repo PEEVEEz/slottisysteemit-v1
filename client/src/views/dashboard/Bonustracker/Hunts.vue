@@ -6,6 +6,7 @@ import Multiply from "@/components/icons/Multiply.vue";
 import DollarIcon from "../../../components/icons/Dollar.vue";
 import TargetIcon from "../../../components/icons/Target.vue";
 import CreateBonusHunt from "../../..//components/modals/CreateBonusHunt.vue";
+import { useRouter } from "vue-router";
 
 const userStore = useUserStore();
 const huntsStore = useHuntsStore();
@@ -27,6 +28,12 @@ const { open: openCreateHunt, close: closeCreateHunt } = useModal({
     },
   },
 });
+
+const copyWidgetUrl = () => {
+  navigator.clipboard.writeText(
+    `${window.location.origin}/widget/${userStore.user?._id}`
+  );
+};
 </script>
 <template>
   <div class="flex-1 p-8 w-full">
@@ -86,7 +93,10 @@ const { open: openCreateHunt, close: closeCreateHunt } = useModal({
         Edit theme (Coming soon)
       </button>
 
-      <button class="w-full sm:w-1/3 rounded text-white bg-[#1a1d21] py-2">
+      <button
+        @click="copyWidgetUrl"
+        class="w-full sm:w-1/3 rounded text-white bg-[#1a1d21] py-2"
+      >
         Copy widget url
       </button>
 
