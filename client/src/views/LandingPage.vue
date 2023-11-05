@@ -4,6 +4,8 @@ import Navbar from "../components/Navbar.vue";
 import { useUserStore } from "@/stores/user";
 
 const userStore = useUserStore();
+
+const api_url = import.meta.env.VITE_API_URL;
 </script>
 
 <template>
@@ -29,7 +31,7 @@ const userStore = useUserStore();
 
           <a
             v-if="!userStore.user"
-            href="http://localhost:3001/auth/login"
+            :href="`${api_url}/auth/login`"
             class="bg-[#1a1d21] w-1/2 py-2 rounded text-center"
           >
             Login with discord

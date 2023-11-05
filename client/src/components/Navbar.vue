@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { useUserStore } from "../stores/user";
 const userStore = useUserStore();
+
+const api_url = import.meta.env.VITE_API_URL;
 </script>
 
 <template>
@@ -9,7 +11,7 @@ const userStore = useUserStore();
 
     <div>
       <a
-        href="http://localhost:3001/auth/login"
+        :href="`${api_url}/auth/login`"
         v-if="!userStore.user"
         class="bg-[#0094ff] px-4 py-1.5 rounded"
       >

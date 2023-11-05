@@ -15,12 +15,9 @@ const emit = defineEmits<{
 }>();
 
 const handleSearch = async () => {
-  const result = await api.get(
-    "http://localhost:3001/game/search?name=" + name.value,
-    {
-      withCredentials: true,
-    }
-  );
+  const result = await api.get("game/search?name=" + name.value, {
+    withCredentials: true,
+  });
 
   items.value = result.data.data.allGames;
 };

@@ -7,7 +7,7 @@ import Widget from "../components/Widget.vue";
 const route = useRoute();
 const huntData = ref<{ start: number; bonuses: any[] }>();
 
-const socket = io("http://localhost:3001", {
+const socket = io(import.meta.env.VITE_API_URL, {
   query: {
     key: route.params.id,
   },
