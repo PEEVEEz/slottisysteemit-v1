@@ -14,7 +14,11 @@ var sockets: {
   };
 } = {};
 
-export const sendMessageToAllWithSameKey = (key: string, message: any) => {
+export const sendMessageToAllWithSameKey = (
+  key: string,
+  event: string,
+  message: any
+) => {
   if (!sockets[key]) return console.log("[SOCKET] No active sockets");
   const socketListenerIds = Object.keys(sockets[key]);
 
@@ -23,7 +27,7 @@ export const sendMessageToAllWithSameKey = (key: string, message: any) => {
     const socket = sockets[key][socketListenerId];
 
     if (socket) {
-      socket.send(message);
+      socket.emit(event, message);
     }
   }
 };
@@ -45,12 +49,13 @@ export const setupSocketServer = (server: HttpServer) => {
     sockets[String(query?.key)] = sockets[String(query?.key)] || {};
     sockets[String(query?.key)][socket.id] = socket;
 
-    const activeHunt = await database.models.hunt.findOne({
-      user_id: query.key,
-      active: true,
-    });
+    const latestHunt = await database.models.hunt
+      .findOne({
+        user_id: query.key,
+      })
+      .sort({ updatedAt: -1 });
 
-    socket.emit("hunt", activeHunt || {});
+    socket.emit("hunt", latestHunt || {});
 
     socket.on("disconnect", () => {
       delete sockets[String(query?.key)][socket.id];

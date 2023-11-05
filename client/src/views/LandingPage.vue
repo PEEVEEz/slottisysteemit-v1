@@ -46,7 +46,13 @@ const userStore = useUserStore();
 
       <div>
         <Widget
-          :data="{ start: 500, bonuses: ['', ''] }"
+          :data="{
+            start: 500,
+            bonuses: [
+              { game_name: 'Example game', bet: 2.4, payout: 300 },
+              { game_name: 'Example game', bet: 2.4 },
+            ],
+          }"
           class="pointer-events-none select-none opacity-60 shadow-2xl shadow-zinc-300/10"
         />
       </div>

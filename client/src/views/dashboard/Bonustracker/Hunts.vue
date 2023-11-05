@@ -140,7 +140,9 @@ const { open: openCreateHunt, close: closeCreateHunt } = useModal({
               <RouterLink :to="'/dashboard/hunts/' + v._id">
                 <i class="bx bx-show-alt text-lg"></i>
               </RouterLink>
-              <button><i class="bx bx-trash text-red-500 text-lg"></i></button>
+              <button @click="huntsStore.deleteHunt(v._id)">
+                <i class="bx bx-trash text-red-500 text-lg"></i>
+              </button>
             </td>
           </tr>
         </tbody>

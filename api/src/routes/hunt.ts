@@ -1,6 +1,6 @@
 import database from "../database";
 import { FastifyRequest } from "fastify";
-import { StatusCodes } from "http-status-codes";
+import { StatusCodes, getReasonPhrase } from "http-status-codes";
 import { authMiddleware } from "../middlewares/auth";
 import { RawServerDefault } from "fastify/types/utils";
 import { FastifyInstance } from "fastify/types/instance";
@@ -8,6 +8,7 @@ import { FastifyBaseLogger } from "fastify/types/logger";
 import { FastifyPluginOptions } from "fastify/types/plugin";
 import { IncomingMessage, ServerResponse } from "node:http";
 import { FastifyTypeProvider } from "fastify/types/type-provider";
+import { sendMessageToAllWithSameKey } from "../socket";
 
 export const registerHuntRoutes = (
   instance: FastifyInstance<
@@ -22,6 +23,23 @@ export const registerHuntRoutes = (
 ) => {
   /** @ts-ignore */
   instance.addHook("preHandler", authMiddleware);
+
+  instance.delete(
+    "/:id",
+    async (req: FastifyRequest<{ Params: { id: string } }>, reply) => {
+      const success = await database.models.hunt.findByIdAndDelete(
+        req.params.id
+      );
+
+      if (success) {
+        return getReasonPhrase(StatusCodes.OK);
+      }
+
+      return reply.status(StatusCodes.INTERNAL_SERVER_ERROR).send({
+        message: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR),
+      });
+    }
+  );
 
   instance.get(
     "/",
@@ -54,6 +72,7 @@ export const registerHuntRoutes = (
         bonuses: hunt.bonuses,
       });
 
+      sendMessageToAllWithSameKey(req.user._id, "hunt", hunt);
       return { bonuses: hunt.bonuses };
     }
   );
@@ -98,16 +117,6 @@ export const registerHuntRoutes = (
       req: FastifyRequest<{ Body: { name: string; start: number } }>,
       reply
     ) => {
-      const activeHunt = await database.models.hunt.findOne({
-        user_id: req.user._id,
-        active: true,
-      });
-
-      if (activeHunt)
-        return reply.status(StatusCodes.FORBIDDEN).send({
-          message: activeHunt._id,
-        });
-
       const newHunt = new database.models.hunt({
         user_id: req.user._id,
         name: req.body.name,
@@ -117,6 +126,8 @@ export const registerHuntRoutes = (
       });
 
       newHunt.save();
+
+      sendMessageToAllWithSameKey(req.user._id, "hunt", newHunt);
 
       return {
         _id: newHunt?._id,

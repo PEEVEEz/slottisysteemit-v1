@@ -55,13 +55,6 @@ const { open: openAddBonus, close: closeAddBonus } = useModal({
 
         <button
           v-if="thisHunt?.active"
-          class="rounded text-sm text-white bg-red-500 px-4 py-1.5"
-        >
-          End
-        </button>
-
-        <button
-          v-if="thisHunt?.active"
           @click="openAddBonus"
           class="rounded text-sm text-white bg-[#1a1d21] px-4 py-1.5"
         >
@@ -91,8 +84,8 @@ const { open: openAddBonus, close: closeAddBonus } = useModal({
             >
               {{ v.game_name }}
             </th>
-            <td class="px-6 py-4">{{ v.bet }}</td>
-            <td class="px-6 py-4">{{ v.payout }}</td>
+            <td class="px-6 py-4">{{ v.bet }}€</td>
+            <td class="px-6 py-4">{{ v.payout ? `${v.payout}€` : "" }}</td>
             <td class="px-6 py-4 flex gap-5">
               <button><i class="bx bx-trash text-red-500 text-lg"></i></button>
             </td>

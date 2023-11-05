@@ -29,6 +29,20 @@ export const useHuntsStore = defineStore("hunts", () => {
 
   const hunts = ref<IHunt[] | null>(null);
 
+  const deleteHunt = async (id: string) => {
+    try {
+      const result = await axios.delete("http://localhost:3001/hunt/" + id, {
+        withCredentials: true,
+      });
+
+      if (result.status === 200) {
+        hunts.value = hunts.value?.filter((v) => v._id !== id) || [];
+      }
+    } catch (e) {
+      console.log("ERR");
+    }
+  };
+
   const addBonus = async (huntId: string, bonus: IBonus) => {
     if (!hunts.value) return;
 
@@ -87,5 +101,5 @@ export const useHuntsStore = defineStore("hunts", () => {
     loading.value = false;
   };
 
-  return { hunts, loading, init, newHunt, addBonus };
+  return { hunts, loading, init, newHunt, addBonus, deleteHunt };
 });

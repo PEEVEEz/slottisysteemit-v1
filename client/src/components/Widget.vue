@@ -33,6 +33,7 @@ const props = defineProps<{
         </div>
       </div>
       <Vue3Marquee
+        :duration="9"
         v-if="props.data?.bonuses && props.data?.bonuses.length >= 8"
         vertical
         style="height: 100%; width: 100%; align-items: start"
@@ -43,10 +44,12 @@ const props = defineProps<{
           v-for="(v, k) in props.data?.bonuses"
         >
           <div class="w-10">{{ k + 1 }}</div>
-          <div class="w-2/3">The Crypt</div>
+          <div class="w-2/3">{{ v.game_name }}</div>
 
-          <div class="w-3/12 text-end">0.2€</div>
-          <div class="w-3/12 text-end">150,000€</div>
+          <div class="w-3/12 text-end">{{ v.bet }}€</div>
+          <div class="w-3/12 text-end">
+            {{ v.payout ? `${v.payout}€` : "" }}
+          </div>
         </div>
         <div> </div>
       </Vue3Marquee>
@@ -59,10 +62,12 @@ const props = defineProps<{
           v-for="(v, k) in props.data?.bonuses"
         >
           <div class="w-10">{{ k + 1 }}</div>
-          <div class="w-2/3">The Crypt</div>
+          <div class="w-2/3">{{ v.game_name }}</div>
 
-          <div class="w-3/12 text-end">0.2€</div>
-          <div class="w-3/12 text-end">150,000€</div>
+          <div class="w-3/12 text-end">{{ v.bet }}€</div>
+          <div class="w-3/12 text-end">
+            {{ v.payout ? `${v.payout}€` : "" }}
+          </div>
         </div>
       </div>
     </div>
