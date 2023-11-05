@@ -38,7 +38,7 @@ const { open: openCreateHunt, close: closeCreateHunt } = useModal({
           <h1 class="text-base text-white/70 font-medium mb-1 uppercase">
             Best win
           </h1>
-          <span class="text-white text-sm">100$</span>
+          <span class="text-white text-sm">0$</span>
         </div>
 
         <DollarIcon
@@ -53,7 +53,7 @@ const { open: openCreateHunt, close: closeCreateHunt } = useModal({
           <h1 class="text-base text-white/70 font-medium mb-1 uppercase">
             Best X win
           </h1>
-          <span class="text-white text-sm">5</span>
+          <span class="text-white text-sm">0</span>
         </div>
 
         <Multiply
@@ -68,7 +68,7 @@ const { open: openCreateHunt, close: closeCreateHunt } = useModal({
           <h1 class="text-base text-white/70 font-medium mb-1 uppercase">
             Bonus hunts
           </h1>
-          <span class="text-white text-sm">1</span>
+          <span class="text-white text-sm">0</span>
         </div>
 
         <TargetIcon
@@ -91,7 +91,7 @@ const { open: openCreateHunt, close: closeCreateHunt } = useModal({
       </button>
 
       <button class="w-full sm:w-1/3 rounded text-white bg-red-500 py-2">
-        Delete all data
+        Delete all data (Coming soon)
       </button>
     </div>
 
