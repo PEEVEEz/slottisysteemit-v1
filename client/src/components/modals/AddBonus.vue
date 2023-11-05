@@ -1,10 +1,9 @@
 <script setup lang="ts">
+import api from "@/api";
 import { ref } from "vue";
-import InputText from "primevue/inputtext";
 import InputNumber from "primevue/inputnumber";
 import AutoComplete from "primevue/autocomplete";
 import { VueFinalModal } from "vue-final-modal";
-import axios from "axios";
 
 const bet = ref(0);
 const name = ref("");
@@ -16,7 +15,7 @@ const emit = defineEmits<{
 }>();
 
 const handleSearch = async () => {
-  const result = await axios.get(
+  const result = await api.get(
     "http://localhost:3001/game/search?name=" + name.value,
     {
       withCredentials: true,

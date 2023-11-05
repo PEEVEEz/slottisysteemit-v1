@@ -1,5 +1,5 @@
-import axios from "axios";
-import { ref, computed } from "vue";
+import api from "@/api";
+import { ref } from "vue";
 import { defineStore } from "pinia";
 
 export interface IBonus {
@@ -31,7 +31,7 @@ export const useHuntsStore = defineStore("hunts", () => {
 
   const deleteHunt = async (id: string) => {
     try {
-      const result = await axios.delete("http://localhost:3001/hunt/" + id, {
+      const result = await api.delete("hunt/" + id, {
         withCredentials: true,
       });
 
@@ -47,8 +47,8 @@ export const useHuntsStore = defineStore("hunts", () => {
     if (!hunts.value) return;
 
     try {
-      const result = await axios.post(
-        "http://localhost:3001/hunt/addBonus",
+      const result = await api.post(
+        "hunt/addBonus",
         { huntId, game_name: bonus.game_name, bet: bonus.bet },
         {
           withCredentials: true,
@@ -69,8 +69,7 @@ export const useHuntsStore = defineStore("hunts", () => {
     loading.value = true;
 
     try {
-      console.log("TEHÄÄS NY SI");
-      const result = await axios.post("http://localhost:3001/hunt", data, {
+      const result = await api.post("hunt", data, {
         withCredentials: true,
       });
 
@@ -89,7 +88,7 @@ export const useHuntsStore = defineStore("hunts", () => {
     if (hunts.value) return;
 
     try {
-      const result = await axios.get("http://localhost:3001/hunt", {
+      const result = await api.get("hunt", {
         withCredentials: true,
       });
 

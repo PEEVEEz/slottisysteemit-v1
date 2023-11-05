@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "@/api";
 import { ref, computed } from "vue";
 import { defineStore } from "pinia";
 
@@ -15,7 +15,7 @@ export const useUserStore = defineStore("user", () => {
 
   const init = async () => {
     try {
-      const result = await axios.get("http://localhost:3001/user/me", {
+      const result = await api.get("user/me", {
         withCredentials: true,
       });
 
@@ -29,7 +29,7 @@ export const useUserStore = defineStore("user", () => {
   };
 
   const logout = async () => {
-    const result = await axios.get("http://localhost:3001/auth/logout", {
+    const result = await api.get("auth/logout", {
       withCredentials: true,
     });
 
