@@ -29,14 +29,10 @@ server.register(registerAuthRoutes, { prefix: "auth" });
 server.register(registerUserRoutes, { prefix: "user" });
 server.register(registerHuntRoutes, { prefix: "hunt" });
 
-setupSocketServer(server.server);
-
 database.connect();
+setupSocketServer(server.server);
 server.listen({ port: Number(env.PORT), host: env.HOST }, (err, addr) => {
-  if (err) {
-    console.error(err);
-    process.exit(1);
-  }
+  if (err) throw err;
 
   console.log(`[API] Listening at ${addr}`);
 });

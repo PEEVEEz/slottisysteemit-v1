@@ -3,7 +3,7 @@ import Toast from "primevue/toast";
 import Sidebar from "../../components/Sidebar.vue";
 </script>
 <template>
-  <div class="flex h-full w-full">
+  <div class="md:flex h-full w-full">
     <Toast />
     <Sidebar />
     <RouterView />

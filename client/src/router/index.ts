@@ -16,6 +16,10 @@ const router = createRouter({
       meta: { requiresAuth: true },
       children: [
         {
+          path: "",
+          component: () => import("@/views/dashboard/DashboardHome.vue"),
+        },
+        {
           path: "hunts",
           component: () => import("../views/dashboard/Bonustracker/Hunts.vue"),
         },

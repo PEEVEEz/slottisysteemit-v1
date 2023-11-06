@@ -19,7 +19,7 @@ const handleSearch = async () => {
     withCredentials: true,
   });
 
-  items.value = result.data.data.allGames;
+  items.value = result.data;
 };
 </script>
 <template>
@@ -49,7 +49,7 @@ const handleSearch = async () => {
             },
           }"
           v-model="name"
-          :suggestions="items.map((v) => v.name)"
+          :suggestions="items"
           @complete="handleSearch"
         />
       </div>

@@ -1,25 +1,20 @@
 import database from "./database";
+import { SocketConnections } from "./types";
 import { Server as HttpServer } from "node:http";
-import { Socket, Server as SocketServer } from "socket.io";
-import { DefaultEventsMap } from "socket.io/dist/typed-events";
+import { Server as SocketServer } from "socket.io";
 
-var sockets: {
-  [key: string]: {
-    [socketId: string]: Socket<
-      DefaultEventsMap,
-      DefaultEventsMap,
-      DefaultEventsMap,
-      any
-    >;
-  };
-} = {};
+var sockets: SocketConnections = {};
 
 export const sendMessageToAllWithSameKey = (
   key: string,
   event: string,
   message: any
 ) => {
-  if (!sockets[key]) return console.log("[SOCKET] No active sockets");
+  if (!sockets[key]) {
+    console.log("[SOCKET] No active sockets");
+    return;
+  }
+
   const socketListenerIds = Object.keys(sockets[key]);
 
   for (let i = 0; i < socketListenerIds.length; i++) {
@@ -49,13 +44,17 @@ export const setupSocketServer = (server: HttpServer) => {
     sockets[String(query?.key)] = sockets[String(query?.key)] || {};
     sockets[String(query?.key)][socket.id] = socket;
 
-    const latestHunt = await database.models.hunt
-      .findOne({
-        user_id: query.key,
-      })
-      .sort({ updatedAt: -1 });
+    try {
+      const latestHunt = await database.models.hunt
+        .findOne({
+          user_id: query.key,
+        })
+        .sort({ updatedAt: -1 });
 
-    socket.emit("hunt", latestHunt || {});
+      socket.emit("hunt", latestHunt || {});
+    } catch (error) {
+      console.error("Error fetching latest hunt:", error);
+    }
 
     socket.on("disconnect", () => {
       delete sockets[String(query?.key)][socket.id];

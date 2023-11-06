@@ -1,23 +1,13 @@
 import database from "../database";
 import { FastifyRequest } from "fastify";
-import { StatusCodes, getReasonPhrase } from "http-status-codes";
+import { FastifyInstanceType } from "../types";
 import { authMiddleware } from "../middlewares/auth";
-import { RawServerDefault } from "fastify/types/utils";
-import { FastifyInstance } from "fastify/types/instance";
-import { FastifyBaseLogger } from "fastify/types/logger";
-import { FastifyPluginOptions } from "fastify/types/plugin";
-import { IncomingMessage, ServerResponse } from "node:http";
-import { FastifyTypeProvider } from "fastify/types/type-provider";
 import { sendMessageToAllWithSameKey } from "../socket";
+import { FastifyPluginOptions } from "fastify/types/plugin";
+import { StatusCodes, getReasonPhrase } from "http-status-codes";
 
 export const registerHuntRoutes = (
-  instance: FastifyInstance<
-    RawServerDefault,
-    IncomingMessage,
-    ServerResponse<IncomingMessage>,
-    FastifyBaseLogger,
-    FastifyTypeProvider
-  >,
+  instance: FastifyInstanceType,
   _opt: FastifyPluginOptions,
   done: (err?: Error | undefined) => void
 ) => {
@@ -41,12 +31,9 @@ export const registerHuntRoutes = (
     }
   );
 
-  instance.get(
-    "/",
-    async (req: FastifyRequest<{ Body: { _id: string } }>, reply) => {
-      return await database.models.hunt.find({ user_id: req.user._id });
-    }
-  );
+  instance.get("/", async (req: FastifyRequest<{ Body: { _id: string } }>) => {
+    return await database.models.hunt.find({ user_id: req.user._id });
+  });
 
   instance.post(
     "/addBonus",
@@ -59,7 +46,7 @@ export const registerHuntRoutes = (
       var hunt = await database.models.hunt.findById(req.body.huntId);
       if (!hunt)
         return reply.status(StatusCodes.NOT_FOUND).send({
-          message: req.body.huntId,
+          message: getReasonPhrase(StatusCodes.NOT_FOUND),
         });
 
       hunt.bonuses.push({
@@ -86,10 +73,10 @@ export const registerHuntRoutes = (
 
       if (!result)
         return reply.status(StatusCodes.NOT_FOUND).send({
-          message: "Hunt not found",
+          message: getReasonPhrase(StatusCodes.NOT_FOUND),
         });
 
-      return "ok";
+      return getReasonPhrase(StatusCodes.OK);
     }
   );
 
@@ -104,10 +91,10 @@ export const registerHuntRoutes = (
 
       if (!result)
         return reply.status(StatusCodes.NOT_FOUND).send({
-          message: "Hunt not found",
+          message: getReasonPhrase(StatusCodes.NOT_FOUND),
         });
 
-      return "ok";
+      return getReasonPhrase(StatusCodes.OK);
     }
   );
 
@@ -117,6 +104,13 @@ export const registerHuntRoutes = (
       req: FastifyRequest<{ Body: { name: string; start: number } }>,
       reply
     ) => {
+      if (!req.body.name || !req.body.start) {
+        reply.status(StatusCodes.BAD_REQUEST).send({
+          message: getReasonPhrase(StatusCodes.BAD_REQUEST),
+        });
+        return;
+      }
+
       const newHunt = new database.models.hunt({
         user_id: req.user._id,
         name: req.body.name,

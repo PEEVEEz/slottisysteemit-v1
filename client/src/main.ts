@@ -18,7 +18,7 @@ const app = createApp(App);
 app.use(PrimeVue, {
   ripple: true,
   unstyled: true,
-  pt: Tailwind,
+  pt: {},
   ptOptions: { mergeProps: true },
 });
 app.use(Vue3Marquee);

@@ -3,31 +3,21 @@ import database from "../database";
 import { sign } from "jsonwebtoken";
 import discord from "../utils/discord";
 import { FastifyRequest } from "fastify";
-import { StatusCodes } from "http-status-codes";
-import { RawServerDefault } from "fastify/types/utils";
-import { FastifyInstance } from "fastify/types/instance";
-import { FastifyBaseLogger } from "fastify/types/logger";
+import { FastifyInstanceType } from "../types";
 import { FastifyPluginOptions } from "fastify/types/plugin";
-import { IncomingMessage, ServerResponse } from "node:http";
-import { FastifyTypeProvider } from "fastify/types/type-provider";
+import { StatusCodes, getReasonPhrase } from "http-status-codes";
 
 export const registerAuthRoutes = (
-  instance: FastifyInstance<
-    RawServerDefault,
-    IncomingMessage,
-    ServerResponse<IncomingMessage>,
-    FastifyBaseLogger,
-    FastifyTypeProvider
-  >,
+  instance: FastifyInstanceType,
   _opt: FastifyPluginOptions,
   done: (err?: Error | undefined) => void
 ) => {
-  instance.get("/logout", (req, reply) => {
+  instance.get("/logout", (_, reply) => {
     reply.clearCookie("token");
-    return "OK";
+    return getReasonPhrase(StatusCodes.OK);
   });
 
-  instance.get("/login", (req, reply) => {
+  instance.get("/login", (_, reply) => {
     reply.redirect(
       `https://discord.com/api/oauth2/authorize?client_id=${env.CLIENT_ID}&redirect_uri=${env.REDIRECT_URI}&response_type=code&scope=identify%20email`
     );
@@ -38,34 +28,42 @@ export const registerAuthRoutes = (
     async (req: FastifyRequest<{ Querystring: { code: string } }>, reply) => {
       const code = req.query.code;
       if (!code)
-        return reply
-          .status(StatusCodes.UNAUTHORIZED)
-          .send("Query code not found");
-
-      const access_token = await discord.getAccessToken(code.toString());
-      const user = await discord.getUserData(access_token);
-
-      const userExists = await database.models.user.findOne({
-        discordId: user.id,
-      });
-
-      if (!userExists) {
-        const newUser = new database.models.user({
-          discordId: user.id,
-          accessToken: access_token,
+        return reply.status(StatusCodes.UNAUTHORIZED).send({
+          message: getReasonPhrase(StatusCodes.UNAUTHORIZED),
         });
 
-        newUser.save();
-      } else {
-        userExists.updateOne({ accessToken: access_token });
+      try {
+        const access_token = await discord.getAccessToken(code.toString());
+        const user = await discord.getUserData(access_token);
+
+        const userExists = await database.models.user.findOne({
+          discordId: user.id,
+        });
+
+        if (!userExists) {
+          const newUser = new database.models.user({
+            discordId: user.id,
+            accessToken: access_token,
+          });
+
+          newUser.save();
+        } else {
+          userExists.updateOne({ accessToken: access_token });
+        }
+
+        const token = sign({ sub: user.id }, env.JWT_SECRET, {
+          expiresIn: "7d",
+        });
+
+        reply.setCookie("token", token, { path: "/", secure: false });
+        reply.redirect(env.DASHBOARD_URL);
+      } catch (e) {
+        console.log("Auth callback error", e);
+
+        return reply.status(StatusCodes.INTERNAL_SERVER_ERROR).send({
+          message: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR),
+        });
       }
-
-      const token = sign({ sub: user.id }, env.JWT_SECRET, {
-        expiresIn: "7d",
-      });
-
-      reply.setCookie("token", token, { path: "/", secure: false });
-      reply.redirect(env.CLIENT_REDIRECT);
     }
   );
 

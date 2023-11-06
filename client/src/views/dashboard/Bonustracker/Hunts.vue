@@ -6,7 +6,10 @@ import Multiply from "@/components/icons/Multiply.vue";
 import DollarIcon from "../../../components/icons/Dollar.vue";
 import TargetIcon from "../../../components/icons/Target.vue";
 import CreateBonusHunt from "../../..//components/modals/CreateBonusHunt.vue";
-import { useRouter } from "vue-router";
+import PageTitle from "@/components/PageTitle.vue";
+import { useToast } from "primevue/usetoast";
+
+const toast = useToast();
 
 const userStore = useUserStore();
 const huntsStore = useHuntsStore();
@@ -33,10 +36,14 @@ const copyWidgetUrl = () => {
   navigator.clipboard.writeText(
     `${window.location.origin}/widget/${userStore.user?._id}`
   );
+
+  toast.add({ severity: "success", summary: "Url copied to clipoard" });
 };
 </script>
 <template>
   <div class="flex-1 p-8 w-full">
+    <PageTitle title="Bonushunts" />
+
     <div class="flex flex-col sm:flex-row sm:gap-12 gap-6">
       <div
         class="flex justify-between bg-[#1a1d21] md:w-1/3 w-full p-3 rounded"

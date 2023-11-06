@@ -1,43 +1,38 @@
-import type {
-  FastifyReply,
-  FastifyRequest,
-  HookHandlerDoneFunction,
-} from "fastify";
-import { StatusCodes } from "http-status-codes";
-import { verify } from "jsonwebtoken";
 import { env } from "../env";
 import database from "../database";
+import { verify } from "jsonwebtoken";
 import discord from "../utils/discord";
+import { StatusCodes } from "http-status-codes";
+import type { FastifyReply, FastifyRequest } from "fastify";
 
 export const authMiddleware = async (
   req: FastifyRequest,
-  reply: FastifyReply,
-  _done: HookHandlerDoneFunction
+  reply: FastifyReply
 ) => {
-  const token = req.cookies.token;
-  if (!token)
-    return reply.status(StatusCodes.UNAUTHORIZED).send({
-      message: "Invalid authentication token",
+  try {
+    const token = req.cookies.token;
+    if (!token) {
+      throw new Error("Invalid authentication token");
+    }
+
+    const { sub } = verify(token, env.JWT_SECRET);
+    const user = await database.models.user.findOne({ discordId: sub });
+
+    if (!user) {
+      throw new Error("Invalid user");
+    }
+
+    const discordUser = await discord.getUserData(user?.accessToken);
+
+    if (!discordUser) {
+      throw new Error("Invalid discord user");
+    }
+
+    req.user = discordUser;
+    req.user._id = user._id;
+  } catch (e: any) {
+    reply.status(StatusCodes.UNAUTHORIZED).send({
+      message: e.message,
     });
-
-  const { sub } = verify(token, env.JWT_SECRET);
-
-  const user = await database.models.user.findOne({ discordId: sub });
-
-  if (!user)
-    return reply
-      .status(StatusCodes.FORBIDDEN)
-      .send({ message: "Invalid user" });
-
-  const discordUser = await discord.getUserData(user?.accessToken);
-
-  if (!discordUser)
-    return reply
-      .status(StatusCodes.FORBIDDEN)
-      .send({ message: "Invalid discord user" });
-
-  req.user = discordUser;
-  req.user._id = user._id;
-
-  return;
+  }
 };

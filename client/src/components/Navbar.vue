@@ -7,7 +7,7 @@ const api_url = import.meta.env.VITE_API_URL;
 
 <template>
   <div class="pt-5 pb-4 text-white flex justify-between items-center">
-    <h1 class="text-3xl font-medium">Bonustracker</h1>
+    <h1 class="text-3xl font-medium">Slottisysteemit</h1>
 
     <div>
       <a

@@ -12,7 +12,7 @@ const envSchema = z.object({
   JWT_SECRET: z.string().min(1),
   HOST: z.string().min(1),
 
-  CLIENT_REDIRECT: z.string().min(1),
+  DASHBOARD_URL: z.string().min(1),
 });
 
 export const env = envSchema.parse(process.env);
