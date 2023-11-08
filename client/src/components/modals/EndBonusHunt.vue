@@ -1,12 +1,8 @@
 <script setup lang="ts">
-import { ref } from "vue";
 import { VueFinalModal } from "vue-final-modal";
 
-const bet = ref(0);
-const name = ref("");
-
 const emit = defineEmits<{
-  (e: "confirm", gameName: string, bet: number): void;
+  (e: "confirm"): void;
   (e: "cancel"): void;
 }>();
 </script>
@@ -28,7 +24,7 @@ const emit = defineEmits<{
       </button>
 
       <button
-        @click="emit('confirm', name, bet)"
+        @click="emit('confirm')"
         class="bg-[#0094ff] w-full py-1 text-white rounded"
       >
         Yes

@@ -151,8 +151,8 @@ const copyWidgetUrl = () => {
             >
               {{ v.name }}
             </th>
-            <td class="px-6 py-4">{{ v.start }}</td>
-            <td class="px-6 py-4">{{ v.end ?? "-" }}</td>
+            <td class="px-6 py-4">{{ v.start }}€</td>
+            <td class="px-6 py-4">{{ v.end ? `${v.end}€` : "-" }}</td>
             <td class="px-6 py-4 flex gap-5">
               <RouterLink :to="'/dashboard/hunts/' + v._id">
                 <i class="bx bx-show-alt text-lg"></i>

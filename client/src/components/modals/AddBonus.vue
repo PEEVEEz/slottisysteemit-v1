@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import api from "@/api";
 import { ref } from "vue";
-import InputNumber from "primevue/inputnumber";
-import AutoComplete from "primevue/autocomplete";
+import AutoComplete from "../Autocomplete.vue";
 import { VueFinalModal } from "vue-final-modal";
+import InputCurrency from "../InputCurrency.vue";
 
 const bet = ref(0);
 const name = ref("");
@@ -35,38 +35,16 @@ const handleSearch = async () => {
         <span>Game name</span>
 
         <AutoComplete
-          :pt="{
-            input: {
-              class:
-                'bg-[#1a1d21] border-none w-full py-1.5 rounded outline-none',
-            },
-            panel: {
-              class:
-                'bg-[#1a1d21] border border-white/10 mt-2 rounded text-white overflow-y-auto',
-            },
-            item: {
-              class: 'hover:bg-black/5 cursor-pointer',
-            },
-          }"
+          :value="name"
+          :items="items"
+          v-on:change="() => handleSearch()"
           v-model="name"
-          :suggestions="items"
-          @complete="handleSearch"
         />
       </div>
 
       <div class="flex flex-col gap-1">
         <span>Bet</span>
-        <InputNumber
-          :pt="{
-            input: {
-              class:
-                'bg-[#1a1d21] border-none w-full py-1.5 rounded outline-none',
-            },
-          }"
-          currency="EUR"
-          mode="currency"
-          v-model="bet"
-        />
+        <InputCurrency :value="bet" v-model="bet" />
       </div>
     </div>
 
