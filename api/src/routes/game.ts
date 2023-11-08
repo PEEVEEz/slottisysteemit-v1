@@ -22,6 +22,7 @@ export const registerGameRoutes = (
 
         return (data.data.allGames as { name: string }[]).map((v) => v.name);
       } catch (error) {
+        console.log(error);
         reply.code(500).send({ error: "Internal Server Error" });
         return [req.query.name];
       }
