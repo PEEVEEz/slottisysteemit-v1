@@ -1,6 +1,5 @@
 import { FastifyRequest } from "fastify";
 import { FastifyInstanceType } from "../types";
-import { authMiddleware } from "../middlewares/auth";
 import { FastifyPluginOptions } from "fastify/types/plugin";
 
 export const registerGameRoutes = (
@@ -8,9 +7,6 @@ export const registerGameRoutes = (
   _opt: FastifyPluginOptions,
   done: (err?: Error | undefined) => void
 ) => {
-  /** @ts-ignore */
-  instance.addHook("preHandler", authMiddleware);
-
   instance.get(
     "/search",
     async (req: FastifyRequest<{ Querystring: { name: string } }>, reply) => {

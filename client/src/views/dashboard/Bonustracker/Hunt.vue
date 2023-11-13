@@ -1,13 +1,19 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
 import { useModal } from "vue-final-modal";
 import { useHuntsStore } from "@/stores/hunts";
 import AddBonus from "@/components/modals/AddBonus.vue";
+import InputCurrency from "@/components/InputCurrency.vue";
+import ArrowLeft from "../../../components/icons/ArrowLeft.vue";
+import ArrowRight from "../../../components/icons/ArrowRight.vue";
 
 const route = useRoute();
 const huntStore = useHuntsStore();
 huntStore.init();
+
+const result = ref(0);
+const redeemingGame = ref(0);
 
 const thisHunt = computed(() => {
   return huntStore.hunts?.find((v) => v._id === route.params.id);
@@ -59,6 +65,31 @@ const { open: openAddBonus, close: closeAddBonus } = useModal({
           class="rounded text-sm text-white bg-[#1a1d21] px-4 py-1.5"
         >
           Add bonus
+        </button>
+      </div>
+    </div>
+
+    <div
+      v-if="thisHunt?.redeeming"
+      class="flex flex-col items-center mb-4 gap-3 text-white"
+    >
+      <h1 class="text-2xl">Redeeming</h1>
+
+      <div class="flex gap-10 items-center">
+        <button class="flex items-center">
+          <ArrowLeft class="w-8" />
+          <span class="ml-[-0.4rem]">Previous</span>
+        </button>
+
+        <div class="flex flex-col gap-4 items-center">
+          {{ thisHunt?.bonuses[redeemingGame].game_name }}
+
+          <InputCurrency :value="result" v-model="result" />
+        </div>
+
+        <button class="flex items-center">
+          <span>Next</span>
+          <ArrowRight class="w-8" />
         </button>
       </div>
     </div>

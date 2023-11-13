@@ -1,0 +1,54 @@
+import database from "../database";
+import { FastifyRequest } from "fastify";
+import { FastifyInstanceType } from "../types";
+import { authMiddleware } from "../middlewares/auth";
+import { sendMessageToAllWithSameKey } from "../socket";
+import { FastifyPluginOptions } from "fastify/types/plugin";
+import { StatusCodes, getReasonPhrase } from "http-status-codes";
+
+export const registerBonusRoutes = (
+  instance: FastifyInstanceType,
+  _opt: FastifyPluginOptions,
+  done: (err?: Error | undefined) => void
+) => {
+  /** @ts-ignore */
+  instance.addHook("preHandler", authMiddleware);
+
+  instance.post(
+    "/",
+    async (
+      req: FastifyRequest<{
+        Body: { hunt_id: string; game_name: string; bet: number };
+      }>,
+      reply
+    ) => {
+      try {
+        var hunt = await database.models.hunt.findById(req.body.hunt_id);
+        if (!hunt)
+          return reply.status(StatusCodes.NOT_FOUND).send({
+            message: getReasonPhrase(StatusCodes.NOT_FOUND),
+          });
+
+        hunt.bonuses.push({
+          game_name: req.body.game_name,
+          bet: req.body.bet,
+          index: hunt.bonuses.length,
+        });
+
+        await database.models.hunt.findByIdAndUpdate(req.body.hunt_id, {
+          bonuses: hunt.bonuses,
+        });
+
+        sendMessageToAllWithSameKey(req.user._id, "hunt", hunt);
+        return { bonuses: hunt.bonuses };
+      } catch (e) {
+        console.error(e);
+        return reply.status(StatusCodes.INTERNAL_SERVER_ERROR).send({
+          message: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR),
+        });
+      }
+    }
+  );
+
+  done();
+};

@@ -48,8 +48,8 @@ export const useHuntsStore = defineStore("hunts", () => {
 
     try {
       const result = await api.post(
-        "hunt/addBonus",
-        { huntId, game_name: bonus.game_name, bet: bonus.bet },
+        "bonus",
+        { hunt_id: huntId, game_name: bonus.game_name, bet: bonus.bet },
         {
           withCredentials: true,
         }

@@ -1,15 +1,12 @@
 <script setup lang="ts">
 import { useModal } from "vue-final-modal";
+import PageTitle from "@/components/PageTitle.vue";
 import { useUserStore } from "../../../stores/user";
 import { useHuntsStore } from "../../../stores/hunts";
 import Multiply from "@/components/icons/Multiply.vue";
 import DollarIcon from "../../../components/icons/Dollar.vue";
 import TargetIcon from "../../../components/icons/Target.vue";
 import CreateBonusHunt from "../../..//components/modals/CreateBonusHunt.vue";
-import PageTitle from "@/components/PageTitle.vue";
-import { useToast } from "primevue/usetoast";
-
-const toast = useToast();
 
 const userStore = useUserStore();
 const huntsStore = useHuntsStore();
@@ -37,7 +34,7 @@ const copyWidgetUrl = () => {
     `${window.location.origin}/widget/${userStore.user?._id}`
   );
 
-  toast.add({ severity: "success", summary: "Url copied to clipoard" });
+  // toast.add({ severity: "success", summary: "Url copied to clipoard" });
 };
 </script>
 <template>
@@ -82,7 +79,7 @@ const copyWidgetUrl = () => {
           <h1 class="text-base text-white/70 font-medium mb-1 uppercase">
             Bonus hunts
           </h1>
-          <span class="text-white text-sm">0</span>
+          <span class="text-white text-sm">{{ huntsStore.hunts?.length }}</span>
         </div>
 
         <TargetIcon

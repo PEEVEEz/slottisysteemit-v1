@@ -36,69 +36,6 @@ export const registerHuntRoutes = (
   });
 
   instance.post(
-    "/addBonus",
-    async (
-      req: FastifyRequest<{
-        Body: { game_name: string; bet: number; huntId: string };
-      }>,
-      reply
-    ) => {
-      var hunt = await database.models.hunt.findById(req.body.huntId);
-      if (!hunt)
-        return reply.status(StatusCodes.NOT_FOUND).send({
-          message: getReasonPhrase(StatusCodes.NOT_FOUND),
-        });
-
-      hunt.bonuses.push({
-        game_name: req.body.game_name,
-        bet: req.body.bet,
-        index: hunt.bonuses.length,
-      });
-
-      await database.models.hunt.findByIdAndUpdate(req.body.huntId, {
-        bonuses: hunt.bonuses,
-      });
-
-      sendMessageToAllWithSameKey(req.user._id, "hunt", hunt);
-      return { bonuses: hunt.bonuses };
-    }
-  );
-
-  instance.post(
-    "/startRedeeming",
-    (req: FastifyRequest<{ Body: { _id: string } }>, reply) => {
-      const result = database.models.hunt.findByIdAndUpdate(req.body._id, {
-        redeeming: true,
-      });
-
-      if (!result)
-        return reply.status(StatusCodes.NOT_FOUND).send({
-          message: getReasonPhrase(StatusCodes.NOT_FOUND),
-        });
-
-      return getReasonPhrase(StatusCodes.OK);
-    }
-  );
-
-  instance.post(
-    "/end",
-    (req: FastifyRequest<{ Body: { _id: string; end: number } }>, reply) => {
-      const result = database.models.hunt.findByIdAndUpdate(req.body._id, {
-        redeeming: false,
-        active: false,
-        end: req.body.end,
-      });
-
-      if (!result)
-        return reply.status(StatusCodes.NOT_FOUND).send({
-          message: getReasonPhrase(StatusCodes.NOT_FOUND),
-        });
-
-      return getReasonPhrase(StatusCodes.OK);
-    }
-  );
-
-  instance.post(
     "/",
     async (
       req: FastifyRequest<{ Body: { name: string; start: number } }>,
@@ -111,25 +48,32 @@ export const registerHuntRoutes = (
         return;
       }
 
-      const newHunt = new database.models.hunt({
-        user_id: req.user._id,
-        name: req.body.name,
-        start: req.body.start,
-        active: true,
-        bonuses: [],
-      });
+      try {
+        const newHunt = new database.models.hunt({
+          user_id: req.user._id,
+          name: req.body.name,
+          start: req.body.start,
+          active: true,
+          bonuses: [],
+        });
 
-      newHunt.save();
+        newHunt.save();
 
-      sendMessageToAllWithSameKey(req.user._id, "hunt", newHunt);
+        sendMessageToAllWithSameKey(req.user._id, "hunt", newHunt);
 
-      return {
-        _id: newHunt?._id,
-        name: req.body.name,
-        start: req.body.start,
-        active: true,
-        bonuses: [],
-      };
+        return {
+          _id: newHunt?._id,
+          name: req.body.name,
+          start: req.body.start,
+          active: true,
+          bonuses: [],
+        };
+      } catch (e) {
+        console.error(e);
+        reply.status(StatusCodes.INTERNAL_SERVER_ERROR).send({
+          message: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR),
+        });
+      }
     }
   );
 

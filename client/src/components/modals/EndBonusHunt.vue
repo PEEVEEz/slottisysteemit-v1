@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { VueFinalModal } from "vue-final-modal";
+import Modal from "../Modal.vue";
 
 const emit = defineEmits<{
   (e: "confirm"): void;
@@ -7,12 +7,7 @@ const emit = defineEmits<{
 }>();
 </script>
 <template>
-  <VueFinalModal
-    class="flex items-center pt-28 flex-col"
-    content-class="flex flex-col px-5 pb-5 pt-6 bg-[#0e0f12] shadow shadow-white/5 border border-white/5 rounded text-white"
-    overlay-transition="vfm-fade"
-    content-transition="vfm-fade"
-  >
+  <Modal>
     <h1 class="text-center text-2xl mb-4">Are you sure?</h1>
 
     <div class="mt-12 flex gap-7">
@@ -30,5 +25,5 @@ const emit = defineEmits<{
         Yes
       </button>
     </div>
-  </VueFinalModal>
+  </Modal>
 </template>
