@@ -1,9 +1,15 @@
 <script setup lang="ts">
+import { computed } from "vue";
 import { Vue3Marquee } from "vue3-marquee";
+import type { IBonus } from "@/stores/hunts";
 
 const props = defineProps<{
-  data: { start: number; bonuses: any[] } | undefined;
+  data: { start: number; bonuses: IBonus[] } | undefined;
 }>();
+
+const winnings = computed(() => {
+  return props.data?.bonuses.map((v) => v.payout || 0).reduce((a, b) => a + b);
+});
 </script>
 <template>
   <div class="flex flex-col w-[24rem]">
@@ -24,7 +30,10 @@ const props = defineProps<{
         <div class="flex w-36 gap-2 text-center">
           <div class="text-xs text-gray-300 w-1/2 flex flex-col">
             <span class="uppercase">winnings</span>
-            <span class="text-violet-400 text-[0.7rem]">-</span>
+            <span class="text-violet-400 text-[0.7rem]">{{
+              winnings ? `${winnings}€` : "-"
+            }}</span>
+            <!-- {{ winnings }} -->
           </div>
           <div class="text-xs text-gray-300 w-1/2 flex flex-col">
             <span class="uppercase">req avg</span>

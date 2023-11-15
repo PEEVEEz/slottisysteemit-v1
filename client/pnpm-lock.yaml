@@ -17,9 +17,6 @@ dependencies:
   postcss:
     specifier: ^8.4.31
     version: 8.4.31
-  primevue:
-    specifier: ^3.38.1
-    version: 3.38.1(vue@3.3.4)
   socket.io-client:
     specifier: ^4.7.2
     version: 4.7.2
@@ -1365,14 +1362,6 @@ packages:
       nanoid: 3.3.6
       picocolors: 1.0.0
       source-map-js: 1.0.2
-
-  /primevue@3.38.1(vue@3.3.4):
-    resolution: {integrity: sha512-mRzRIF1EXGD0uxh8jitQaHDqgSt157OUhPTwfn2I/+96ljNtyXbNqo8oeFVNSzCiH9Zt1ECUziSh1PfFxJqK5A==}
-    peerDependencies:
-      vue: ^3.0.0
-    dependencies:
-      vue: 3.3.4
-    dev: false
 
   /proxy-from-env@1.1.0:
     resolution: {integrity: sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==}

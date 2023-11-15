@@ -29,22 +29,65 @@ export const registerBonusRoutes = (
             message: getReasonPhrase(StatusCodes.NOT_FOUND),
           });
 
-        hunt.bonuses.push({
-          game_name: req.body.game_name,
-          bet: req.body.bet,
-          index: hunt.bonuses.length,
-        });
+        const bonuses = [
+          ...hunt.bonuses,
+          {
+            game_name: req.body.game_name,
+            bet: req.body.bet,
+            index: hunt.bonuses.length,
+            // payout: 500,
+          },
+        ];
 
         await database.models.hunt.findByIdAndUpdate(req.body.hunt_id, {
-          bonuses: hunt.bonuses,
+          bonuses: bonuses,
         });
 
-        sendMessageToAllWithSameKey(req.user._id, "hunt", hunt);
-        return { bonuses: hunt.bonuses };
+        sendMessageToAllWithSameKey(req.user._id, "hunt", { ...hunt, bonuses });
+        return bonuses;
       } catch (e) {
         console.error(e);
         return reply.status(StatusCodes.INTERNAL_SERVER_ERROR).send({
           message: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR),
+          error: e,
+        });
+      }
+    }
+  );
+
+  instance.delete(
+    "/:hunt_id/:bonus_id",
+    async (
+      req: FastifyRequest<{ Params: { hunt_id: string; bonus_id: string } }>,
+      reply
+    ) => {
+      try {
+        var hunt = await database.models.hunt.findById(req.params.hunt_id);
+        if (!hunt)
+          return reply.status(StatusCodes.NOT_FOUND).send({
+            message: getReasonPhrase(StatusCodes.NOT_FOUND),
+          });
+
+        //tosi hieno
+        const bonuses = hunt.bonuses.filter(
+          (element) => element._id?.toString() !== req.params.bonus_id
+        );
+
+        await database.models.hunt.findByIdAndUpdate(req.params.hunt_id, {
+          bonuses: bonuses,
+        });
+
+        sendMessageToAllWithSameKey(req.user._id, "hunt", {
+          ...hunt,
+          bonuses,
+        });
+
+        return bonuses;
+      } catch (e) {
+        console.error(e);
+        reply.status(StatusCodes.INTERNAL_SERVER_ERROR).send({
+          message: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR),
+          error: e,
         });
       }
     }

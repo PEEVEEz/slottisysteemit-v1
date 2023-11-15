@@ -5,8 +5,6 @@ import { useUserStore } from "@/stores/user";
 const userStore = useUserStore();
 
 const open = ref(false);
-
-userStore.init();
 </script>
 <template>
   <div

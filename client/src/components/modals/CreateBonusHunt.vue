@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import Modal from "../Modal.vue";
-import InputText from "primevue/inputtext";
-import InputNumber from "primevue/inputnumber";
+import InputText from "../InputText.vue";
+import InputCurrency from "../InputCurrency.vue";
 
 const name = ref("");
 const start = ref(0);
@@ -20,30 +20,12 @@ const emit = defineEmits<{
     <div class="flex flex-col gap-4 flex-1">
       <div class="flex flex-col gap-1">
         <span>Name</span>
-        <InputText
-          :pt="{
-            root: {
-              class:
-                'bg-[#1a1d21] border-none w-full py-1.5 rounded outline-none',
-            },
-          }"
-          v-model="name"
-        />
+        <InputText :value="name" v-model="name" />
       </div>
 
       <div class="flex flex-col gap-1">
         <span>Start</span>
-        <InputNumber
-          :pt="{
-            input: {
-              class:
-                'bg-[#1a1d21] border-none w-full py-1.5 rounded outline-none',
-            },
-          }"
-          currency="EUR"
-          mode="currency"
-          v-model="start"
-        />
+        <InputCurrency :value="start" v-model="start" />
       </div>
     </div>
 

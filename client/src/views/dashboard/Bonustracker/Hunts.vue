@@ -7,6 +7,7 @@ import Multiply from "@/components/icons/Multiply.vue";
 import DollarIcon from "../../../components/icons/Dollar.vue";
 import TargetIcon from "../../../components/icons/Target.vue";
 import CreateBonusHunt from "../../..//components/modals/CreateBonusHunt.vue";
+import { computed } from "vue";
 
 const userStore = useUserStore();
 const huntsStore = useHuntsStore();
@@ -16,7 +17,7 @@ const { open: openCreateHunt, close: closeCreateHunt } = useModal({
   component: CreateBonusHunt,
   attrs: {
     onConfirm(name, start) {
-      huntsStore.newHunt({
+      huntsStore.createHunt({
         name,
         start,
       });
@@ -33,9 +34,11 @@ const copyWidgetUrl = () => {
   navigator.clipboard.writeText(
     `${window.location.origin}/widget/${userStore.user?._id}`
   );
-
-  // toast.add({ severity: "success", summary: "Url copied to clipoard" });
 };
+
+const hunts = computed(() => {
+  return huntsStore.hunts || [];
+});
 </script>
 <template>
   <div class="flex-1 p-8 w-full">
@@ -79,7 +82,7 @@ const copyWidgetUrl = () => {
           <h1 class="text-base text-white/70 font-medium mb-1 uppercase">
             Bonus hunts
           </h1>
-          <span class="text-white text-sm">{{ huntsStore.hunts?.length }}</span>
+          <span class="text-white text-sm">{{ hunts.length }}</span>
         </div>
 
         <TargetIcon
@@ -139,7 +142,7 @@ const copyWidgetUrl = () => {
         <tbody>
           <tr
             v-if="!huntsStore.loading"
-            v-for="(v, k) in huntsStore.hunts"
+            v-for="v in hunts"
             class="border-b border-white/5"
           >
             <th

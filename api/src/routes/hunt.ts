@@ -31,6 +31,30 @@ export const registerHuntRoutes = (
     }
   );
 
+  instance.post(
+    "/start",
+    async (req: FastifyRequest<{ Body: { hunt_id: string } }>, reply) => {
+      try {
+        const result = await database.models.hunt.findByIdAndUpdate(
+          req.body.hunt_id,
+          { redeeming: true }
+        );
+
+        if (!result) {
+          throw Error("Error while updating " + req.body.hunt_id);
+        }
+
+        return true;
+      } catch (e) {
+        console.error(e);
+        return reply.status(StatusCodes.INTERNAL_SERVER_ERROR).send({
+          message: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR),
+          error: e,
+        });
+      }
+    }
+  );
+
   instance.get("/", async (req: FastifyRequest<{ Body: { _id: string } }>) => {
     return await database.models.hunt.find({ user_id: req.user._id });
   });
@@ -61,13 +85,7 @@ export const registerHuntRoutes = (
 
         sendMessageToAllWithSameKey(req.user._id, "hunt", newHunt);
 
-        return {
-          _id: newHunt?._id,
-          name: req.body.name,
-          start: req.body.start,
-          active: true,
-          bonuses: [],
-        };
+        return newHunt;
       } catch (e) {
         console.error(e);
         reply.status(StatusCodes.INTERNAL_SERVER_ERROR).send({

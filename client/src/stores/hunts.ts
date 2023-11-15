@@ -3,6 +3,7 @@ import { ref } from "vue";
 import { defineStore } from "pinia";
 
 export interface IBonus {
+  _id?: string;
   game_name: string;
   bet: number;
   payout?: number;
@@ -26,20 +27,73 @@ export interface INewHunt {
 
 export const useHuntsStore = defineStore("hunts", () => {
   const loading = ref(true);
-
   const hunts = ref<IHunt[] | null>(null);
 
   const deleteHunt = async (id: string) => {
+    loading.value = true;
+
     try {
-      const result = await api.delete("hunt/" + id, {
+      const result = await api.delete(`hunt/${id}`, {
         withCredentials: true,
       });
 
       if (result.status === 200) {
-        hunts.value = hunts.value?.filter((v) => v._id !== id) || [];
+        hunts.value = hunts.value?.filter((hunt) => hunt._id !== id) || [];
+      }
+    } catch (error) {
+      console.error("Error deleting hunt", error);
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  const startRedeeming = async (hunt_id?: string) => {
+    if (!hunt_id) return;
+
+    try {
+      const result = await api.post(
+        "hunt/start",
+        { hunt_id },
+        {
+          withCredentials: true,
+        }
+      );
+
+      const huntIndex = hunts.value?.findIndex((hunt) => hunt._id === hunt_id);
+      if (huntIndex === undefined) return;
+
+      if (hunts.value && hunts.value[huntIndex]) {
+        hunts.value[huntIndex] = {
+          ...hunts.value[huntIndex],
+          redeeming: result.data,
+        };
       }
     } catch (e) {
-      console.log("ERR");
+      console.error(e);
+    }
+  };
+
+  const deleteBonus = async (huntId?: string, bonusId?: string) => {
+    if (!huntId || !bonusId) return;
+
+    try {
+      const result = await api.delete(`bonus/${huntId}/${bonusId}`, {
+        withCredentials: true,
+      });
+
+      if (result.status === 200) {
+        const huntIndex = hunts.value?.findIndex((hunt) => hunt._id === huntId);
+        if (huntIndex === undefined) return;
+
+        if (hunts.value && hunts.value[huntIndex]) {
+          hunts.value[huntIndex] = {
+            ...hunts.value[huntIndex],
+            bonuses: result.data,
+          };
+        }
+      }
+    } catch (error) {
+      console.error("Error deleting bonus", error);
     }
   };
 
@@ -56,16 +110,19 @@ export const useHuntsStore = defineStore("hunts", () => {
       );
 
       if (result.status === 200) {
-        const huntIndex = hunts.value.findIndex((v) => v._id == huntId);
-        if (huntIndex === null) return;
-        hunts.value[huntIndex].bonuses = result.data.bonuses;
+        const huntIndex = hunts.value.findIndex((hunt) => hunt._id === huntId);
+        if (huntIndex === -1) return;
+        hunts.value[huntIndex] = {
+          ...hunts.value[huntIndex],
+          bonuses: result.data,
+        };
       }
-    } catch (e) {
-      console.log("add bonus error", e);
+    } catch (error) {
+      console.error("Error adding bonus", error);
     }
   };
 
-  const newHunt = async (data: INewHunt) => {
+  const createHunt = async (data: INewHunt) => {
     loading.value = true;
 
     try {
@@ -74,14 +131,13 @@ export const useHuntsStore = defineStore("hunts", () => {
       });
 
       if (result.status === 200) {
-        console.log(result.data);
         hunts.value?.push(result.data);
       }
-    } catch (e) {
-      console.log("create hunt error", e);
+    } catch (error) {
+      console.error("Error creating hunt", error);
+    } finally {
+      loading.value = false;
     }
-
-    loading.value = false;
   };
 
   const init = async () => {
@@ -93,12 +149,21 @@ export const useHuntsStore = defineStore("hunts", () => {
       });
 
       hunts.value = result.data;
-    } catch (e) {
-      console.log("get hunts error", e);
+    } catch (error) {
+      console.error("Error getting hunts", error);
+    } finally {
+      loading.value = false;
     }
-
-    loading.value = false;
   };
 
-  return { hunts, loading, init, newHunt, addBonus, deleteHunt };
+  return {
+    hunts,
+    loading,
+    init,
+    createHunt,
+    addBonus,
+    deleteHunt,
+    deleteBonus,
+    startRedeeming,
+  };
 });
