@@ -1,6 +1,7 @@
 import { FastifyRequest } from "fastify";
 import { FastifyInstanceType } from "../types";
 import { FastifyPluginOptions } from "fastify/types/plugin";
+import { StatusCodes, getReasonPhrase } from "http-status-codes";
 
 export const registerGameRoutes = (
   instance: FastifyInstanceType,
@@ -18,9 +19,11 @@ export const registerGameRoutes = (
 
         return (data.data.allGames as { name: string }[]).map((v) => v.name);
       } catch (error) {
-        console.log(error);
-        reply.code(500).send({ error: "Internal Server Error" });
-        return [req.query.name];
+        console.error(error);
+        reply.code(StatusCodes.INTERNAL_SERVER_ERROR).send({
+          message: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR),
+          error: error,
+        });
       }
     }
   );

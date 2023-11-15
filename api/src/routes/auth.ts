@@ -36,9 +36,14 @@ export const registerAuthRoutes = (
         const access_token = await discord.getAccessToken(code.toString());
         const user = await discord.getUserData(access_token);
 
-        const userExists = await database.models.user.findOne({
-          discordId: user.id,
-        });
+        const userExists = await database.models.user.findOneAndUpdate(
+          {
+            discordId: user.id,
+          },
+          {
+            accessToken: access_token,
+          }
+        );
 
         if (!userExists) {
           const newUser = new database.models.user({
@@ -47,8 +52,6 @@ export const registerAuthRoutes = (
           });
 
           newUser.save();
-        } else {
-          userExists.updateOne({ accessToken: access_token });
         }
 
         const token = sign({ sub: user.id }, env.JWT_SECRET, {
@@ -62,6 +65,7 @@ export const registerAuthRoutes = (
 
         return reply.status(StatusCodes.INTERNAL_SERVER_ERROR).send({
           message: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR),
+          error: e,
         });
       }
     }

@@ -45,13 +45,13 @@ export const setupSocketServer = (server: HttpServer) => {
     sockets[String(query?.key)][socket.id] = socket;
 
     try {
-      const latestHunt = await database.models.hunt
+      const hunt = await database.models.hunt
         .findOne({
           user_id: query.key,
         })
         .sort({ updatedAt: -1 });
 
-      socket.emit("hunt", latestHunt || {});
+      socket.emit("hunt", hunt || {});
     } catch (error) {
       console.error("Error fetching latest hunt:", error);
     }
