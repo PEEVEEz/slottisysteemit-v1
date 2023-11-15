@@ -47,6 +47,31 @@ export const useHuntsStore = defineStore("hunts", () => {
     }
   };
 
+  const redeemBonus = async (
+    hunt_id: string,
+    bonus_id: string,
+    payout: number
+  ) => {
+    try {
+      const result = await api.post(
+        "bonus/redeem",
+        { hunt_id, bonus_id, payout },
+        {
+          withCredentials: true,
+        }
+      );
+
+      const huntIndex = hunts.value?.findIndex((hunt) => hunt._id === hunt_id);
+      if (huntIndex === undefined || huntIndex === -1) return;
+
+      if (hunts.value && hunts.value[huntIndex]) {
+        hunts.value[huntIndex].bonuses = result.data;
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   const startRedeeming = async (hunt_id?: string) => {
     if (!hunt_id) return;
 
@@ -159,6 +184,7 @@ export const useHuntsStore = defineStore("hunts", () => {
   return {
     hunts,
     loading,
+    redeemBonus,
     init,
     createHunt,
     addBonus,
