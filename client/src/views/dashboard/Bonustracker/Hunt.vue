@@ -69,7 +69,7 @@ const { open: openAddBonus, close: closeAddBonus } = useModal({
         :class="{ 'items-center': thisHunt?.redeeming }"
       >
         <RouterLink to="/dashboard/hunts"
-          ><i class="bx bx-chevron-left text-3xl"></i>
+          ><i class="bx bx-chevron-left text-3xl"></i> s
         </RouterLink>
         <span class="text-xl font-medium"
           >{{ thisHunt?.name }} |
