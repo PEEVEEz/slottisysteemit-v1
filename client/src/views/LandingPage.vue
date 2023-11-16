@@ -11,7 +11,7 @@ const api_url = import.meta.env.VITE_API_URL;
 </script>
 
 <template>
-  <div class="mx-auto max-w-7xl flex flex-col h-full sm:px-0 px-3">
+  <div class="mx-auto max-w-7xl flex flex-col h-full px-3">
     <Navbar />
     <div
       class="mt-36 flex sm:justify-between gap-5 flex-col sm:flex-row flex-1"

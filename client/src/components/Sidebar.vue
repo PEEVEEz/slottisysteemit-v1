@@ -3,8 +3,9 @@ import { ref } from "vue";
 import Menu from "./icons/Menu.vue";
 import { useUserStore } from "@/stores/user";
 import SlotMachine from "./icons/SlotMachine.vue";
-const userStore = useUserStore();
+import LogoutIcon from "./icons/Logout.vue";
 
+const userStore = useUserStore();
 const open = ref(false);
 </script>
 <template>
@@ -13,13 +14,15 @@ const open = ref(false);
     :class="open ? 'left-0' : 'left-[-300px]'"
   >
     <!-- Head  -->
-    <div class="text-white mt-2 flex items-center justify-center gap-3 mr-2">
+    <RouterLink
+      to="/"
+      class="text-white mt-2 flex items-center justify-center gap-3 mr-2"
+    >
       <SlotMachine class="w-6" />
       <span class="text-2xl uppercase font-semibold">Slottisysteemit</span>
-    </div>
+    </RouterLink>
 
     <!-- Items -->
-
     <div class="flex flex-col gap-2 px-2 text-white flex-1">
       <RouterLink
         @click="open = false"
@@ -36,6 +39,11 @@ const open = ref(false);
     </div>
 
     <div
+      class="border border-dashed m-2 h-32 flex items-center justify-center text-white/5 border-white/5 pointer-events-none select-none"
+    >
+      Ad Here
+    </div>
+    <div
       class="flex items-center px-4 mb-2 gap-2 justify-between"
       v-if="userStore.user"
     >
@@ -51,7 +59,7 @@ const open = ref(false);
       </div>
 
       <button @click="userStore.logout">
-        <i class="bx bx-log-out-circle text-xl text-red-500"></i>
+        <LogoutIcon class="w-5 text-red-500" />
       </button>
     </div>
   </div>

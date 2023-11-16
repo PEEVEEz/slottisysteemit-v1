@@ -5,21 +5,18 @@ import EditIcon from "@/components/icons/Edit.vue";
 import TrashIcon from "@/components/icons/Trash.vue";
 import { useHuntsStore, type IBonus } from "@/stores/hunts";
 
+const huntStore = useHuntsStore();
 const props = defineProps<{
   data: IBonus;
   hunt_id: string;
-  redeeming: boolean;
 }>();
-const huntStore = useHuntsStore();
 
 const { open: openUpdateBonus, close: closeUpdateBonus } = useModal({
   component: EditBonus,
   attrs: {
     bet: props.data.bet,
-    payout: props.data.payout,
-    redeeming: props.redeeming,
 
-    onConfirm(name, start) {
+    onConfirm(bet) {
       //   huntStore.updateHunt(props.hunt._id, start, name);
       closeUpdateBonus();
     },

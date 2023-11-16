@@ -1,13 +1,7 @@
 import api from "@/api";
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import { defineStore } from "pinia";
-
-export interface IUser {
-  _id: string;
-  id: string;
-  avatar: string;
-  global_name: string;
-}
+import type { IUser } from "@/types";
 
 export const useUserStore = defineStore("user", () => {
   const loading = ref(true);

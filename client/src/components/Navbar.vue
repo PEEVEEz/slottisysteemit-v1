@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { useUserStore } from "../stores/user";
-import DiscordIcon from "./icons/Discord.vue";
 import SlotMachine from "./icons/SlotMachine.vue";
+import DashboardIcon from "./icons/Dashboard.vue";
+import DiscordIcon from "./icons/Discord.vue";
 
 const userStore = useUserStore();
 
@@ -25,12 +26,20 @@ const api_url = import.meta.env.VITE_API_URL;
         <span class="font-medium">Login with discord</span>
       </a>
 
-      <RouterLink
-        to="/dashboard"
-        class="bg-[#0094ff] px-4 py-1.5 rounded"
-        v-else
-        >Dashboard</RouterLink
-      >
+      <div v-else class="flex items-center gap-7 text-white/80">
+        <RouterLink
+          to="/dashboard"
+          class="flex items-center gap-2 hover:text-white"
+        >
+          <DashboardIcon class="w-5" />
+          <span class="text-sm font-medium">Dashboard</span>
+        </RouterLink>
+
+        <RouterLink to="/" class="flex items-center gap-2 hover:text-white">
+          <DiscordIcon class="w-5" />
+          <span class="text-sm font-medium">Discord</span>
+        </RouterLink>
+      </div>
     </div>
   </div>
 </template>

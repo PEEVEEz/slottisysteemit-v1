@@ -5,15 +5,12 @@ import InputCurrency from "../InputCurrency.vue";
 
 const props = defineProps<{
   bet: number;
-  payout?: number;
-  redeeming: boolean;
 }>();
 
 const bet = ref(props.bet);
-const payout = ref(props.payout || 0);
 
 const emit = defineEmits<{
-  (e: "confirm", bet: number, payout: number): void;
+  (e: "confirm", bet: number): void;
   (e: "cancel"): void;
 }>();
 </script>
@@ -27,11 +24,6 @@ const emit = defineEmits<{
         <span>Bet</span>
         <InputCurrency :value="bet" v-model="bet" />
       </div>
-
-      <div v-if="props.redeeming" class="flex flex-col gap-1">
-        <span>Payout</span>
-        <InputCurrency :value="payout" v-model="payout" />
-      </div>
     </div>
 
     <div class="mt-12 flex gap-5">
@@ -43,7 +35,7 @@ const emit = defineEmits<{
       </button>
 
       <button
-        @click="emit('confirm', bet, payout)"
+        @click="emit('confirm', bet)"
         class="bg-[#0094ff] w-full py-2 text-white rounded text-sm font-medium"
       >
         Update

@@ -1,29 +1,7 @@
 import api from "@/api";
 import { ref } from "vue";
 import { defineStore } from "pinia";
-
-export interface IBonus {
-  _id?: string;
-  game_name: string;
-  bet: number;
-  payout?: number;
-  index?: number;
-}
-
-export interface IHunt {
-  _id: string;
-  name: string;
-  start: number;
-  end?: number;
-  active: boolean;
-  redeeming?: boolean;
-  bonuses: IBonus[];
-}
-
-export interface INewHunt {
-  name: string;
-  start: number;
-}
+import type { IBonus, IHunt, INewHunt } from "@/types";
 
 export const useHuntsStore = defineStore("hunts", () => {
   const loading = ref(true);

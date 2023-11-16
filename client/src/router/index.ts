@@ -26,6 +26,18 @@ const router = createRouter({
         {
           path: "hunts/:id",
           component: () => import("../views/dashboard/Bonustracker/Hunt.vue"),
+          children: [
+            {
+              path: "",
+              component: () =>
+                import("@/views/dashboard/Bonustracker/Hunt/Bonuses.vue"),
+            },
+            {
+              path: "redeem",
+              component: () =>
+                import("@/views/dashboard/Bonustracker/Hunt/Redeem.vue"),
+            },
+          ],
         },
       ],
     },
