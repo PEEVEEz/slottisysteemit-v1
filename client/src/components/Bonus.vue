@@ -1,9 +1,10 @@
 <script setup lang="ts">
+import type { IBonus } from "@/types";
 import { useModal } from "vue-final-modal";
 import EditBonus from "./modals/EditBonus.vue";
 import EditIcon from "@/components/icons/Edit.vue";
 import TrashIcon from "@/components/icons/Trash.vue";
-import { useHuntsStore, type IBonus } from "@/stores/hunts";
+import { useHuntsStore } from "@/stores/hunts";
 
 const huntStore = useHuntsStore();
 const props = defineProps<{

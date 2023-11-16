@@ -4,7 +4,8 @@ import ShowIcon from "@/components/icons/Show.vue";
 import EditIcon from "@/components/icons/Edit.vue";
 import TrashIcon from "@/components/icons/Trash.vue";
 import EditBonusHunt from "./modals/EditBonusHunt.vue";
-import { useHuntsStore, type IHunt } from "@/stores/hunts";
+import { useHuntsStore } from "@/stores/hunts";
+import type { IHunt } from "@/types";
 
 const props = defineProps<{ hunt: IHunt }>();
 
