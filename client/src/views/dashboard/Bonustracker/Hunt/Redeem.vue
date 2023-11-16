@@ -55,7 +55,7 @@ const handleNextAndPreviousClick = (value: number): void => {
         />
       </div>
       <div class="text-center text-white/50 text-xs mt-5">
-        Simply press [ENTER] to save changes and advance.
+        Simply press [ENTER] to save changes and advance. (Coming soon)
       </div>
     </div>
   </div>

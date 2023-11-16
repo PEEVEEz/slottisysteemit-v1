@@ -15,6 +15,52 @@ export const registerBonusRoutes = (
   /** @ts-ignore */
   instance.addHook("preHandler", authMiddleware);
 
+  instance.put(
+    "/",
+    async (
+      req: FastifyRequest<{
+        Body: { hunt_id: string; bonus_id: string; bet: number };
+      }>,
+      reply
+    ) => {
+      try {
+        var hunt = await database.models.hunt.findById(req.body.hunt_id);
+        if (!hunt)
+          return reply.status(StatusCodes.NOT_FOUND).send({
+            message: getReasonPhrase(StatusCodes.NOT_FOUND),
+          });
+
+        var bonuses = hunt.bonuses;
+        const index = bonuses.findIndex(
+          (v) => v._id?.toString() === req.body.bonus_id
+        );
+
+        if (index == -1) throw Error("Invalid bonus id");
+        bonuses[index].bet = req.body.bet;
+
+        await database.models.hunt.findByIdAndUpdate(req.body.hunt_id, {
+          bonuses: bonuses,
+        });
+
+        sendMessageToAllWithSameKey(
+          req.user._id,
+          "hunt",
+          getFixedHuntData({
+            start: hunt.start,
+            bonuses,
+          })
+        );
+        return bonuses;
+      } catch (error) {
+        console.error(error);
+        return reply.status(StatusCodes.INTERNAL_SERVER_ERROR).send({
+          message: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR),
+          error: error,
+        });
+      }
+    }
+  );
+
   instance.post(
     "/",
     async (

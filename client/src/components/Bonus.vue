@@ -18,7 +18,8 @@ const { open: openUpdateBonus, close: closeUpdateBonus } = useModal({
     bet: props.data.bet,
 
     onConfirm(bet) {
-      //   huntStore.updateHunt(props.hunt._id, start, name);
+      if (!props.data._id) return;
+      huntStore.updateBonusBet(props.hunt_id, props.data._id, bet);
       closeUpdateBonus();
     },
     onCancel() {

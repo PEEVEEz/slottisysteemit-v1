@@ -11,6 +11,28 @@ export const useHuntsStore = defineStore("hunts", () => {
     console.error(message, error);
   };
 
+  const updateBonusBet = async (
+    hunt_id: string,
+    bonus_id: string,
+    bet: number
+  ) => {
+    if (!hunts.value) return;
+
+    try {
+      const result = await api.put(
+        "bonus",
+        { hunt_id, bonus_id, bet },
+        { withCredentials: true }
+      );
+
+      const index = hunts.value?.findIndex((v) => v._id === hunt_id);
+      if (index === undefined || index === -1) return;
+      hunts.value[index].bonuses = result.data;
+    } catch (error) {
+      handleError(error, "Error updating bonus bet");
+    }
+  };
+
   const deleteHunt = async (id: string) => {
     loading.value = true;
 
@@ -172,5 +194,6 @@ export const useHuntsStore = defineStore("hunts", () => {
     deleteBonus,
     updateHunt,
     startRedeeming,
+    updateBonusBet,
   };
 });
