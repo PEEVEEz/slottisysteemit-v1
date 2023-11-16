@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import type { IBonus } from "@/types";
 import { computed } from "vue";
 import { Vue3Marquee } from "vue3-marquee";
-import type { IBonus } from "@/stores/hunts";
 
 const props = defineProps<{
   data: { start: number; bonuses: IBonus[] } | undefined;
