@@ -141,6 +141,7 @@ const hunts = computed(() => {
           <tr>
             <th scope="col" class="px-6 py-3">Name</th>
             <th scope="col" class="px-6 py-3">Start</th>
+            <th scope="col" class="px-6 py-3">Req avg</th>
             <th scope="col" class="px-6 py-3">End</th>
             <th scope="col" class="px-6 py-3">Actions</th>
           </tr>

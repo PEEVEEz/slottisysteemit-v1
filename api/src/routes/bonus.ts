@@ -29,25 +29,27 @@ export const registerBonusRoutes = (
             message: getReasonPhrase(StatusCodes.NOT_FOUND),
           });
 
-        const bonuses = [
-          ...hunt.bonuses,
+        hunt = await database.models.hunt.findByIdAndUpdate(
+          req.body.hunt_id,
           {
-            game_name: req.body.game_name,
-            bet: req.body.bet,
-            index: hunt.bonuses.length,
-            // payout: 500,
+            $push: {
+              bonuses: {
+                game_name: req.body.game_name,
+                bet: req.body.bet,
+                index: hunt.bonuses.length,
+              },
+            },
           },
-        ];
+          { new: true }
+        );
 
-        await database.models.hunt.findByIdAndUpdate(req.body.hunt_id, {
-          bonuses: bonuses,
-        });
+        if (!hunt) return;
 
         sendMessageToAllWithSameKey(req.user._id, "hunt", {
           start: hunt.start,
-          bonuses,
+          bonuses: hunt.bonuses,
         });
-        return bonuses;
+        return hunt.bonuses;
       } catch (e) {
         console.error(e);
         return reply.status(StatusCodes.INTERNAL_SERVER_ERROR).send({
