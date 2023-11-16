@@ -18,7 +18,7 @@ export const getFixedHuntData = (hunt: Hunt) => {
   if (!betAmount) return hunt;
 
   if (win) {
-    hunt.winnings = win;
+    hunt.winnings = Number(win).toFixed(2);
 
     if (win >= start) hunt.reqavg = 0;
     else hunt.reqavg = ((Number(start) - win) / betAmount).toFixed(2);
