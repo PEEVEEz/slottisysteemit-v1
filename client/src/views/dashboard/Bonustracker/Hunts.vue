@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import { computed } from "vue";
+import Hunt from "@/components/Hunt.vue";
 import { useModal } from "vue-final-modal";
 import { useToast } from "vue-toast-notification";
 import PageTitle from "@/components/PageTitle.vue";
-import ShowIcon from "@/components/icons/Show.vue";
-import EditIcon from "@/components/icons/Edit.vue";
 import CopyIcon from "@/components/icons/Copy.vue";
 import { useUserStore } from "../../../stores/user";
-import TrashIcon from "@/components/icons/Trash.vue";
 import { useHuntsStore } from "../../../stores/hunts";
 import Multiply from "@/components/icons/Multiply.vue";
 import PaintCanIcon from "@/components/icons/PaintCan.vue";
@@ -148,33 +146,7 @@ const hunts = computed(() => {
           </tr>
         </thead>
         <tbody>
-          <tr
-            v-if="!huntsStore.loading"
-            v-for="v in hunts"
-            class="border-b border-white/5"
-          >
-            <th
-              scope="row"
-              class="px-6 py-4 font-medium text-zinc-100 whitespace-nowrap"
-            >
-              {{ v.name }}
-            </th>
-            <td class="px-6 py-4">{{ v.start }}€</td>
-            <td class="px-6 py-4">{{ v.end ? `${v.end}€` : "-" }}</td>
-            <td class="px-6 py-4 flex gap-5">
-              <RouterLink :to="'/dashboard/hunts/' + v._id">
-                <ShowIcon class="w-5 text-white/50" />
-              </RouterLink>
-
-              <button>
-                <EditIcon class="w-5 text-white/50" />
-              </button>
-
-              <button @click="huntsStore.deleteHunt(v._id)">
-                <TrashIcon class="w-5 text-red-500" />
-              </button>
-            </td>
-          </tr>
+          <Hunt v-for="v in hunts" :hunt="v" />
         </tbody>
       </table>
     </div>

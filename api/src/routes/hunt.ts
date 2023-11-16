@@ -59,6 +59,35 @@ export const registerHuntRoutes = (
     return await database.models.hunt.find({ user_id: req.user._id });
   });
 
+  instance.put(
+    "/",
+    async (
+      req: FastifyRequest<{
+        Body: { hunt_id: string; bet: number; name: string };
+      }>,
+      reply
+    ) => {
+      try {
+        const result = await database.models.hunt.findByIdAndUpdate(
+          req.body.hunt_id,
+          { bet: req.body.bet, name: req.body.name }
+        );
+
+        if (!result) {
+          throw Error("Error while updating " + req.body.hunt_id);
+        }
+
+        return result;
+      } catch (e) {
+        console.error(e);
+        return reply.status(StatusCodes.INTERNAL_SERVER_ERROR).send({
+          message: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR),
+          error: e,
+        });
+      }
+    }
+  );
+
   instance.post(
     "/",
     async (

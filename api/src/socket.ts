@@ -51,7 +51,10 @@ export const setupSocketServer = (server: HttpServer) => {
         })
         .sort({ updatedAt: -1 });
 
-      socket.emit("hunt", hunt || {});
+      socket.emit("hunt", {
+        bonuses: hunt?.bonuses || [],
+        start: hunt?.start,
+      });
     } catch (error) {
       console.error("Error fetching latest hunt:", error);
     }

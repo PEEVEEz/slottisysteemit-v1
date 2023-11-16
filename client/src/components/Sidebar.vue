@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import Menu from "./icons/Menu.vue";
 import { useUserStore } from "@/stores/user";
+import SlotMachine from "./icons/SlotMachine.vue";
 const userStore = useUserStore();
 
 const open = ref(false);
@@ -12,8 +13,9 @@ const open = ref(false);
     :class="open ? 'left-0' : 'left-[-300px]'"
   >
     <!-- Head  -->
-    <div class="text-white text-2xl uppercase font-semibold text-center mt-2">
-      Slottisysteemit
+    <div class="text-white mt-2 flex items-center justify-center gap-3 mr-2">
+      <SlotMachine class="w-6" />
+      <span class="text-2xl uppercase font-semibold">Slottisysteemit</span>
     </div>
 
     <!-- Items -->

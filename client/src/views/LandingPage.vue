@@ -18,14 +18,13 @@ const api_url = import.meta.env.VITE_API_URL;
     >
       <div class="flex flex-col gap-3.5">
         <div class="text-5xl text-white max-w-lg font-medium">
-          Save Time with slot streaming tools
+          Lorem ipsum dolor sit amet
         </div>
 
         <div class="text-zinc-400 text-sm max-w-md">
-          Elevate your slot streaming with "slottisysteemit" and start saving
-          time. Streamers, optimize your bonus hunting adventures, track your
-          wins, and engage your audience more efficiently. Join the slot
-          streaming revolution today
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum
+          nec nunc eget ante fermentum rutrum. Fusce vitae turpis gravida,
+          euismod elit id, accumsan purus.
         </div>
 
         <div class="flex mt-2 max-w-md gap-6 text-white">

@@ -29,7 +29,9 @@ const handleNextAndPreviousClick = (value: number) => {
     }
   }
 
-  payout.value = hunt.bonuses[index.value + value].payout || 0;
+  payout.value =
+    hunt.bonuses[hunt.bonuses?.length === 1 ? index.value : index.value + value]
+      .payout || 0;
 
   if (index.value + value < hunt.bonuses.length) {
     index.value = index.value + value;

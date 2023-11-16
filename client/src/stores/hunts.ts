@@ -29,19 +29,44 @@ export const useHuntsStore = defineStore("hunts", () => {
   const loading = ref(true);
   const hunts = ref<IHunt[] | null>(null);
 
+  const handleError = (error: any, message: string) => {
+    console.error(message, error);
+  };
+
   const deleteHunt = async (id: string) => {
     loading.value = true;
 
     try {
-      const result = await api.delete(`hunt/${id}`, {
-        withCredentials: true,
-      });
+      const result = await api.delete(`hunt/${id}`, { withCredentials: true });
 
       if (result.status === 200) {
         hunts.value = hunts.value?.filter((hunt) => hunt._id !== id) || [];
       }
     } catch (error) {
-      console.error("Error deleting hunt", error);
+      handleError(error, "Error deleting hunt");
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  const updateHunt = async (hunt_id: string, start: number, name: string) => {
+    if (!hunts.value) return;
+    loading.value = true;
+
+    try {
+      await api.put(
+        "hunt",
+        { hunt_id, start, name },
+        { withCredentials: true }
+      );
+
+      const index = hunts.value?.findIndex((v) => v._id === hunt_id);
+
+      if (index === undefined || index === -1) return;
+
+      hunts.value[index] = { ...hunts.value[index], start, name };
+    } catch (error) {
+      handleError(error, "Error updating hunt");
     } finally {
       loading.value = false;
     }
@@ -52,54 +77,45 @@ export const useHuntsStore = defineStore("hunts", () => {
     bonus_id: string,
     payout: number
   ) => {
+    if (!hunts.value) return;
+
     try {
       const result = await api.post(
         "bonus/redeem",
         { hunt_id, bonus_id, payout },
-        {
-          withCredentials: true,
-        }
+        { withCredentials: true }
       );
 
       const huntIndex = hunts.value?.findIndex((hunt) => hunt._id === hunt_id);
       if (huntIndex === undefined || huntIndex === -1) return;
 
-      if (hunts.value && hunts.value[huntIndex]) {
-        hunts.value[huntIndex].bonuses = result.data;
-      }
-    } catch (e) {
-      console.error(e);
+      hunts.value[huntIndex].bonuses = result.data;
+    } catch (error) {
+      handleError(error, "Error redeeming bonus");
     }
   };
 
   const startRedeeming = async (hunt_id?: string) => {
-    if (!hunt_id) return;
+    if (!hunt_id || !hunts.value) return;
 
     try {
       const result = await api.post(
         "hunt/start",
         { hunt_id },
-        {
-          withCredentials: true,
-        }
+        { withCredentials: true }
       );
 
       const huntIndex = hunts.value?.findIndex((hunt) => hunt._id === hunt_id);
       if (huntIndex === undefined) return;
 
-      if (hunts.value && hunts.value[huntIndex]) {
-        hunts.value[huntIndex] = {
-          ...hunts.value[huntIndex],
-          redeeming: result.data,
-        };
-      }
-    } catch (e) {
-      console.error(e);
+      hunts.value[huntIndex].redeeming = result.data;
+    } catch (error) {
+      handleError(error, "Error starting hunt redemption");
     }
   };
 
   const deleteBonus = async (huntId?: string, bonusId?: string) => {
-    if (!huntId || !bonusId) return;
+    if (!huntId || !bonusId || !hunts.value) return;
 
     try {
       const result = await api.delete(`bonus/${huntId}/${bonusId}`, {
@@ -110,15 +126,10 @@ export const useHuntsStore = defineStore("hunts", () => {
         const huntIndex = hunts.value?.findIndex((hunt) => hunt._id === huntId);
         if (huntIndex === undefined) return;
 
-        if (hunts.value && hunts.value[huntIndex]) {
-          hunts.value[huntIndex] = {
-            ...hunts.value[huntIndex],
-            bonuses: result.data,
-          };
-        }
+        hunts.value[huntIndex].bonuses = result.data;
       }
     } catch (error) {
-      console.error("Error deleting bonus", error);
+      handleError(error, "Error deleting bonus");
     }
   };
 
@@ -129,21 +140,16 @@ export const useHuntsStore = defineStore("hunts", () => {
       const result = await api.post(
         "bonus",
         { hunt_id: huntId, game_name: bonus.game_name, bet: bonus.bet },
-        {
-          withCredentials: true,
-        }
+        { withCredentials: true }
       );
 
       if (result.status === 200) {
         const huntIndex = hunts.value.findIndex((hunt) => hunt._id === huntId);
         if (huntIndex === -1) return;
-        hunts.value[huntIndex] = {
-          ...hunts.value[huntIndex],
-          bonuses: result.data,
-        };
+        hunts.value[huntIndex].bonuses = result.data;
       }
     } catch (error) {
-      console.error("Error adding bonus", error);
+      handleError(error, "Error adding bonus");
     }
   };
 
@@ -151,15 +157,13 @@ export const useHuntsStore = defineStore("hunts", () => {
     loading.value = true;
 
     try {
-      const result = await api.post("hunt", data, {
-        withCredentials: true,
-      });
+      const result = await api.post("hunt", data, { withCredentials: true });
 
       if (result.status === 200) {
         hunts.value?.push(result.data);
       }
     } catch (error) {
-      console.error("Error creating hunt", error);
+      handleError(error, "Error creating hunt");
     } finally {
       loading.value = false;
     }
@@ -169,13 +173,11 @@ export const useHuntsStore = defineStore("hunts", () => {
     if (hunts.value) return;
 
     try {
-      const result = await api.get("hunt", {
-        withCredentials: true,
-      });
+      const result = await api.get("hunt", { withCredentials: true });
 
       hunts.value = result.data;
     } catch (error) {
-      console.error("Error getting hunts", error);
+      handleError(error, "Error getting hunts");
     } finally {
       loading.value = false;
     }
@@ -190,6 +192,7 @@ export const useHuntsStore = defineStore("hunts", () => {
     addBonus,
     deleteHunt,
     deleteBonus,
+    updateHunt,
     startRedeeming,
   };
 });

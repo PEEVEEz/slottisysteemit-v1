@@ -8,7 +8,9 @@ const props = defineProps<{
 }>();
 
 const winnings = computed(() => {
-  return props.data?.bonuses.map((v) => v.payout || 0).reduce((a, b) => a + b);
+  return props.data?.bonuses.length
+    ? props.data?.bonuses.map((v) => v.payout || 0).reduce((a, b) => a + b)
+    : 0;
 });
 </script>
 <template>
@@ -21,7 +23,7 @@ const winnings = computed(() => {
         }}</span>
       </div>
     </div>
-    <div class="flex flex-col h-[12rem] bg-gray-900 rounded-tl pb-1">
+    <div class="flex flex-col h-[12rem] bg-gray-900 rounded-tl rounded-b pb-1">
       <div
         class="rounded-t pl-2 border-b border-gray-700/20 text-white py-1 pr-1 flex justify-between items-center"
       >

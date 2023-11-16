@@ -21,5 +21,8 @@ socket.on("hunt", (args) => {
 </script>
 
 <template>
-  <Widget :data="huntData" />
+  <Widget
+    v-if="huntData"
+    :data="{ start: huntData?.start, bonuses: huntData?.bonuses || [] }"
+  />
 </template>

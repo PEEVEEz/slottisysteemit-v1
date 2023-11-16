@@ -43,7 +43,10 @@ export const registerBonusRoutes = (
           bonuses: bonuses,
         });
 
-        sendMessageToAllWithSameKey(req.user._id, "hunt", { ...hunt, bonuses });
+        sendMessageToAllWithSameKey(req.user._id, "hunt", {
+          start: hunt.start,
+          bonuses,
+        });
         return bonuses;
       } catch (e) {
         console.error(e);
@@ -82,7 +85,10 @@ export const registerBonusRoutes = (
           bonuses: bonuses,
         });
 
-        sendMessageToAllWithSameKey(req.user._id, "hunt", { ...hunt, bonuses });
+        sendMessageToAllWithSameKey(req.user._id, "hunt", {
+          start: hunt.start,
+          bonuses,
+        });
         return bonuses;
       } catch (e) {
         console.error(e);
