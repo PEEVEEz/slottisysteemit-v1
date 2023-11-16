@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { computed } from "vue";
 import { useModal } from "vue-final-modal";
+import { useToast } from "vue-toast-notification";
 import PageTitle from "@/components/PageTitle.vue";
 import { useUserStore } from "../../../stores/user";
 import { useHuntsStore } from "../../../stores/hunts";
@@ -7,8 +9,8 @@ import Multiply from "@/components/icons/Multiply.vue";
 import DollarIcon from "../../../components/icons/Dollar.vue";
 import TargetIcon from "../../../components/icons/Target.vue";
 import CreateBonusHunt from "../../..//components/modals/CreateBonusHunt.vue";
-import { computed } from "vue";
 
+const toast = useToast();
 const userStore = useUserStore();
 const huntsStore = useHuntsStore();
 huntsStore.init();
@@ -34,6 +36,8 @@ const copyWidgetUrl = () => {
   navigator.clipboard.writeText(
     `${window.location.origin}/widget/${userStore.user?._id}`
   );
+
+  toast.success("Link copied to clipboard");
 };
 
 const hunts = computed(() => {

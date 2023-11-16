@@ -1,50 +1,18 @@
 <script setup lang="ts">
-import { computed, ref, watch, watchEffect } from "vue";
 import { useRoute } from "vue-router";
 import { useModal } from "vue-final-modal";
+import { computed, ref, watch } from "vue";
 import { useHuntsStore } from "@/stores/hunts";
+import Redeeming from "@/components/Redeeming.vue";
 import AddBonus from "@/components/modals/AddBonus.vue";
-import ArrowLeft from "@/components/icons/ArrowLeft.vue";
-import ArrowRight from "@/components/icons/ArrowRight.vue";
-import InputCurrency from "@/components/InputCurrency.vue";
 
-const result = ref(0);
 const route = useRoute();
-const redeemingGame = ref(0);
 const huntStore = useHuntsStore();
 huntStore.init();
 
 const thisHunt = computed(() => {
   return huntStore.hunts?.find((v) => v._id === route.params.id);
 });
-
-watch(thisHunt, async () => {
-  redeemingGame.value =
-    thisHunt.value?.bonuses.findIndex((v) => {
-      return !v.payout;
-    }) || 0;
-});
-
-const handleNextAndPreviousClick = (value: number) => {
-  if (!thisHunt.value?.bonuses) return;
-  if (redeemingGame.value + value < 0) return;
-  if (redeemingGame.value + value > thisHunt.value?.bonuses?.length) return;
-
-  if (value == +1) {
-    var currentBonus = thisHunt.value.bonuses[redeemingGame.value];
-    if (!currentBonus || !currentBonus._id) return;
-
-    var currentPayout = currentBonus.payout;
-    if (!currentPayout || (currentPayout && currentPayout !== result.value)) {
-      huntStore.redeemBonus(thisHunt.value._id, currentBonus._id, result.value);
-    }
-  }
-
-  if (redeemingGame.value + value < thisHunt.value?.bonuses?.length - 1) {
-    result.value = 0;
-    redeemingGame.value = redeemingGame.value + value;
-  }
-};
 
 const { open: openAddBonus, close: closeAddBonus } = useModal({
   component: AddBonus,
@@ -96,40 +64,7 @@ const { open: openAddBonus, close: closeAddBonus } = useModal({
           Add bonus
         </button>
       </div>
-      <div v-else class="flex flex-col items-center mb-4 gap-3 text-white">
-        <!-- <h1 class="text-2xl">Redeeming</h1> -->
-
-        <div class="flex gap-10 items-center">
-          <button
-            @click="handleNextAndPreviousClick(-1)"
-            class="flex items-center"
-            :class="{ 'text-white/30': redeemingGame <= 0 }"
-          >
-            <ArrowLeft class="w-8" />
-            <span class="ml-[-0.4rem]"></span>
-          </button>
-
-          <div class="flex flex-col gap-4 items-center">
-            <!-- {{ thisHunt?.bonuses }}
-            {{ index }} -->
-            {{
-              thisHunt?.bonuses && thisHunt?.bonuses[redeemingGame]
-                ? thisHunt?.bonuses[redeemingGame].game_name
-                : "Invalid" + redeemingGame
-            }}
-
-            <InputCurrency :value="result" v-model="result" />
-          </div>
-
-          <button
-            @click="handleNextAndPreviousClick(1)"
-            class="flex items-center"
-          >
-            <span class="text-sm font-semibold">ENTER</span>
-            <ArrowRight class="w-8" />
-          </button>
-        </div>
-      </div>
+      <Redeeming v-else :hunt="thisHunt" />
     </div>
 
     <div class="relative overflow-x-auto shadow-sm shadow-black/10 w-full">
