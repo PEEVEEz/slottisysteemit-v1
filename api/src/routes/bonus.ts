@@ -5,6 +5,7 @@ import { authMiddleware } from "../middlewares/auth";
 import { sendMessageToAllWithSameKey } from "../socket";
 import { FastifyPluginOptions } from "fastify/types/plugin";
 import { StatusCodes, getReasonPhrase } from "http-status-codes";
+import { getFixedHuntData } from "../utils/hunt";
 
 export const registerBonusRoutes = (
   instance: FastifyInstanceType,
@@ -45,10 +46,14 @@ export const registerBonusRoutes = (
 
         if (!hunt) return;
 
-        sendMessageToAllWithSameKey(req.user._id, "hunt", {
-          start: hunt.start,
-          bonuses: hunt.bonuses,
-        });
+        sendMessageToAllWithSameKey(
+          req.user._id,
+          "hunt",
+          getFixedHuntData({
+            start: hunt.start,
+            bonuses: hunt.bonuses,
+          })
+        );
         return hunt.bonuses;
       } catch (e) {
         console.error(e);
@@ -87,10 +92,14 @@ export const registerBonusRoutes = (
           bonuses: bonuses,
         });
 
-        sendMessageToAllWithSameKey(req.user._id, "hunt", {
-          start: hunt.start,
-          bonuses,
-        });
+        sendMessageToAllWithSameKey(
+          req.user._id,
+          "hunt",
+          getFixedHuntData({
+            start: hunt.start,
+            bonuses,
+          })
+        );
         return bonuses;
       } catch (e) {
         console.error(e);
@@ -124,10 +133,14 @@ export const registerBonusRoutes = (
           bonuses: bonuses,
         });
 
-        sendMessageToAllWithSameKey(req.user._id, "hunt", {
-          ...hunt,
-          bonuses,
-        });
+        sendMessageToAllWithSameKey(
+          req.user._id,
+          "hunt",
+          getFixedHuntData({
+            start: hunt.start,
+            bonuses,
+          })
+        );
 
         return bonuses;
       } catch (e) {

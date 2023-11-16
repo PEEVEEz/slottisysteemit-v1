@@ -51,9 +51,10 @@ const api_url = import.meta.env.VITE_API_URL;
         <Widget
           :data="{
             start: 500,
+            reqavg: 100,
             bonuses: [
-              { game_name: 'Example game', bet: 2.4, payout: 300 },
-              { game_name: 'Example game 2', bet: 2.4 },
+              { game_name: 'Example game', bet: 2.5, payout: 250 },
+              { game_name: 'Example game 2', bet: 2.5 },
             ],
           }"
           class="pointer-events-none select-none opacity-60 shadow-2xl shadow-zinc-300/10"

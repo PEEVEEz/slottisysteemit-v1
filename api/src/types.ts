@@ -24,3 +24,11 @@ export type SocketConnections = {
     >;
   };
 };
+
+export type Hunt = {
+  start: number;
+  bonuses: any[];
+
+  reqavg?: number | string;
+  winnings?: number | string;
+};

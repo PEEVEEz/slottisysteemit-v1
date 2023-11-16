@@ -5,7 +5,12 @@ import { io } from "socket.io-client";
 import Widget from "../components/Widget.vue";
 
 const route = useRoute();
-const huntData = ref<{ start: number; bonuses: any[] }>();
+const huntData = ref<{
+  start: number;
+  bonuses: any[];
+  reqavg?: string | number;
+  winnings?: string | number;
+}>();
 
 const socket = io(import.meta.env.VITE_API_URL, {
   query: {
@@ -17,13 +22,20 @@ socket.connect();
 
 socket.on("hunt", (args) => {
   huntData.value = args;
+
+  console.log(args);
 });
 </script>
 
 <template>
   <Widget
     v-if="huntData"
-    :data="{ start: huntData?.start, bonuses: huntData?.bonuses || [] }"
+    :data="{
+      start: huntData?.start,
+      winnings: huntData.winnings,
+      reqavg: huntData.reqavg,
+      bonuses: huntData?.bonuses || [],
+    }"
     :colors="{
       background: route.query.background?.toString(),
       text: route.query.text?.toString(),

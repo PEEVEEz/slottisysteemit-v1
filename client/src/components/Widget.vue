@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import type { IBonus } from "@/types";
-import { computed } from "vue";
 import { Vue3Marquee } from "vue3-marquee";
 
 const props = defineProps<{
-  data: { start: number; bonuses: IBonus[] } | undefined;
+  data:
+    | {
+        start: number;
+        reqavg?: string | number;
+        winnings?: string | number;
+        bonuses: IBonus[];
+      }
+    | undefined;
   colors?: { background?: string; text?: string; text2?: string };
 }>();
-
-const winnings = computed(() => {
-  return props.data?.bonuses.length
-    ? props.data?.bonuses.map((v) => v.payout || 0).reduce((a, b) => a + b)
-    : 0;
-});
 
 const defaultColors = {
   background: "111827",
@@ -61,7 +61,11 @@ const getColor = (key: "background" | "text" | "text2"): string => {
               :style="{
                 color: getColor('text2'),
               }"
-              >{{ winnings ? `${winnings}€` : "-" }}</span
+              >{{
+                props.data?.winnings !== undefined
+                  ? `${props.data?.winnings}€`
+                  : "-"
+              }}</span
             >
           </div>
           <div class="text-xs w-1/2 flex flex-col">
@@ -71,7 +75,11 @@ const getColor = (key: "background" | "text" | "text2"): string => {
               :style="{
                 color: getColor('text2'),
               }"
-              >-</span
+              >{{
+                props.data?.reqavg !== undefined
+                  ? `${props.data?.reqavg}x`
+                  : "-"
+              }}</span
             >
           </div>
         </div>

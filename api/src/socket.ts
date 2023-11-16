@@ -2,6 +2,7 @@ import database from "./database";
 import { SocketConnections } from "./types";
 import { Server as HttpServer } from "node:http";
 import { Server as SocketServer } from "socket.io";
+import { getFixedHuntData } from "./utils/hunt";
 
 var sockets: SocketConnections = {};
 
@@ -51,10 +52,15 @@ export const setupSocketServer = (server: HttpServer) => {
         })
         .sort({ updatedAt: -1 });
 
-      socket.emit("hunt", {
-        bonuses: hunt?.bonuses || [],
-        start: hunt?.start,
-      });
+      if (!hunt) return;
+
+      socket.emit(
+        "hunt",
+        getFixedHuntData({
+          bonuses: hunt?.bonuses || [],
+          start: hunt?.start,
+        })
+      );
     } catch (error) {
       console.error("Error fetching latest hunt:", error);
     }
