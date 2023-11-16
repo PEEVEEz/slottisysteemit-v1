@@ -5,6 +5,7 @@ import type { IBonus } from "@/stores/hunts";
 
 const props = defineProps<{
   data: { start: number; bonuses: IBonus[] } | undefined;
+  colors?: { background?: string; text?: string; text2?: string };
 }>();
 
 const winnings = computed(() => {
@@ -12,34 +13,66 @@ const winnings = computed(() => {
     ? props.data?.bonuses.map((v) => v.payout || 0).reduce((a, b) => a + b)
     : 0;
 });
+
+const defaultColors = {
+  background: "111827",
+  text: "fff",
+  text2: "a78bfa",
+};
+
+const getColor = (key: "background" | "text" | "text2"): string => {
+  if (!props.colors) {
+    return `#${defaultColors[key]}`;
+  }
+
+  return `#${props.colors[key] || defaultColors[key]}`;
+};
 </script>
 <template>
-  <div class="flex flex-col w-[24rem]">
-    <div class="flex justify-end text-gray-300">
-      <div class="bg-gray-900 w-36 pt-0.5 rounded-t text-center text-sm">
+  <div class="flex flex-col w-[24rem]" :style="{ color: getColor('text') }">
+    <div class="flex justify-end">
+      <div
+        class="w-36 pt-0.5 rounded-t text-center text-sm"
+        :style="{ backgroundColor: getColor('background') }"
+      >
         START
-        <span class="text-violet-400">{{
-          props.data?.start ? `${props.data?.start}€` : "-"
-        }}</span>
+        <span
+          :style="{
+            color: getColor('text2'),
+          }"
+          >{{ props.data?.start ? `${props.data?.start}€` : "-" }}</span
+        >
       </div>
     </div>
-    <div class="flex flex-col h-[12rem] bg-gray-900 rounded-tl rounded-b pb-1">
+    <div
+      class="flex flex-col h-[12rem] rounded-tl rounded-b pb-1"
+      :style="{ backgroundColor: getColor('background') }"
+    >
       <div
-        class="rounded-t pl-2 border-b border-gray-700/20 text-white py-1 pr-1 flex justify-between items-center"
+        class="rounded-t pl-2 border-b border-gray-700/20 py-1 pr-1 flex justify-between items-center"
       >
         <div class="text-lg">Bonustracker</div>
 
         <div class="flex w-36 gap-2 text-center">
-          <div class="text-xs text-gray-300 w-1/2 flex flex-col">
+          <div class="text-xs w-1/2 flex flex-col">
             <span class="uppercase">winnings</span>
-            <span class="text-violet-400 text-[0.7rem]">{{
-              winnings ? `${winnings}€` : "-"
-            }}</span>
-            <!-- {{ winnings }} -->
+            <span
+              class="text-[0.7rem]"
+              :style="{
+                color: getColor('text2'),
+              }"
+              >{{ winnings ? `${winnings}€` : "-" }}</span
+            >
           </div>
-          <div class="text-xs text-gray-300 w-1/2 flex flex-col">
+          <div class="text-xs w-1/2 flex flex-col">
             <span class="uppercase">req avg</span>
-            <span class="text-violet-400 text-[0.7rem]">-</span>
+            <span
+              class="text-[0.7rem]"
+              :style="{
+                color: getColor('text2'),
+              }"
+              >-</span
+            >
           </div>
         </div>
       </div>
@@ -48,7 +81,7 @@ const winnings = computed(() => {
         v-if="props.data?.bonuses && props.data?.bonuses.length >= 8"
         vertical
         style="height: 100%; width: 100%; align-items: start"
-        class="h-10 text-gray-100 float-left w-full py-0.5 text-[0.8rem] px-2 overflow-hidden"
+        class="h-10 float-left w-full py-1 text-[0.8rem] px-2 overflow-hidden"
       >
         <div
           class="flex gap-1 justify-between w-full"
@@ -66,13 +99,13 @@ const winnings = computed(() => {
       </Vue3Marquee>
       <div
         v-if="props.data?.bonuses && props.data?.bonuses.length <= 7"
-        class="text-gray-100 float-left w-full py-0.5 text-[0.8rem] px-2 overflow-hidden"
+        class="float-left w-full py-1 text-[0.8rem] px-2.5 overflow-hidden"
       >
         <div
           class="flex gap-1 justify-between w-full"
           v-for="(v, k) in props.data?.bonuses"
         >
-          <div class="w-10">{{ k + 1 }}</div>
+          <div class="w-8">{{ k + 1 }}</div>
           <div class="w-2/3">{{ v.game_name }}</div>
 
           <div class="w-3/12 text-end">{{ v.bet }}€</div>

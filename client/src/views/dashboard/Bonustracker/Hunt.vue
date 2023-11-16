@@ -2,10 +2,9 @@
 import { computed } from "vue";
 import { useRoute } from "vue-router";
 import { useModal } from "vue-final-modal";
+import Bonus from "@/components/Bonus.vue";
 import { useHuntsStore } from "@/stores/hunts";
 import Redeeming from "@/components/Redeeming.vue";
-import EditIcon from "@/components/icons/Edit.vue";
-import TrashIcon from "@/components/icons/Trash.vue";
 import AddBonus from "@/components/modals/AddBonus.vue";
 
 const route = useRoute();
@@ -77,28 +76,13 @@ const { open: openAddBonus, close: closeAddBonus } = useModal({
           </tr>
         </thead>
         <tbody>
-          <tr
-            v-for="(v, k) in thisHunt?.bonuses"
-            class="border-b border-white/5"
-          >
-            <th
-              scope="row"
-              class="px-6 py-4 font-medium text-zinc-100 whitespace-nowrap"
-            >
-              {{ v.game_name }}
-            </th>
-            <td class="px-6 py-4">{{ v.bet }}€</td>
-            <td class="px-6 py-4">{{ v.payout ? `${v.payout}€` : "" }}</td>
-            <td class="px-6 py-4 flex gap-5">
-              <button>
-                <EditIcon class="w-5 text-white/50" />
-              </button>
-
-              <button @click="huntStore.deleteBonus(thisHunt?._id, v._id)">
-                <TrashIcon class="w-5 text-red-500" />
-              </button>
-            </td>
-          </tr>
+          <Bonus
+            v-if="thisHunt"
+            v-for="v in thisHunt?.bonuses"
+            :data="v"
+            :hunt_id="thisHunt?._id"
+            :redeeming="thisHunt.redeeming || false"
+          />
         </tbody>
       </table>
     </div>

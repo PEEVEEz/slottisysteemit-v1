@@ -24,5 +24,10 @@ socket.on("hunt", (args) => {
   <Widget
     v-if="huntData"
     :data="{ start: huntData?.start, bonuses: huntData?.bonuses || [] }"
+    :colors="{
+      background: route.query.background?.toString(),
+      text: route.query.text?.toString(),
+      text2: route.query.text2?.toString(),
+    }"
   />
 </template>
