@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import { computed } from "vue";
 import { useRoute } from "vue-router";
 import { useModal } from "vue-final-modal";
-import { computed, ref, watch } from "vue";
 import { useHuntsStore } from "@/stores/hunts";
 import Redeeming from "@/components/Redeeming.vue";
+import EditIcon from "@/components/icons/Edit.vue";
+import TrashIcon from "@/components/icons/Trash.vue";
 import AddBonus from "@/components/modals/AddBonus.vue";
 
 const route = useRoute();
@@ -32,10 +34,7 @@ const { open: openAddBonus, close: closeAddBonus } = useModal({
 <template>
   <div class="p-8 flex-1 w-full" v-if="!huntStore.loading">
     <div class="flex justify-between mb-4">
-      <div
-        class="text-white flex"
-        :class="{ 'items-center': thisHunt?.redeeming }"
-      >
+      <div class="text-white flex items-center">
         <RouterLink to="/dashboard/hunts"
           ><i class="bx bx-chevron-left text-3xl"></i>
         </RouterLink>
@@ -91,8 +90,12 @@ const { open: openAddBonus, close: closeAddBonus } = useModal({
             <td class="px-6 py-4">{{ v.bet }}€</td>
             <td class="px-6 py-4">{{ v.payout ? `${v.payout}€` : "" }}</td>
             <td class="px-6 py-4 flex gap-5">
+              <button>
+                <EditIcon class="w-5 text-white/50" />
+              </button>
+
               <button @click="huntStore.deleteBonus(thisHunt?._id, v._id)">
-                <i class="bx bx-trash text-red-500 text-lg"></i>
+                <TrashIcon class="w-5 text-red-500" />
               </button>
             </td>
           </tr>

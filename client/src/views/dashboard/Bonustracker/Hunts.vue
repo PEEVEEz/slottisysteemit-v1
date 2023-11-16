@@ -3,9 +3,14 @@ import { computed } from "vue";
 import { useModal } from "vue-final-modal";
 import { useToast } from "vue-toast-notification";
 import PageTitle from "@/components/PageTitle.vue";
+import ShowIcon from "@/components/icons/Show.vue";
+import EditIcon from "@/components/icons/Edit.vue";
+import CopyIcon from "@/components/icons/Copy.vue";
 import { useUserStore } from "../../../stores/user";
+import TrashIcon from "@/components/icons/Trash.vue";
 import { useHuntsStore } from "../../../stores/hunts";
 import Multiply from "@/components/icons/Multiply.vue";
+import PaintCanIcon from "@/components/icons/PaintCan.vue";
 import DollarIcon from "../../../components/icons/Dollar.vue";
 import TargetIcon from "../../../components/icons/Target.vue";
 import CreateBonusHunt from "../../..//components/modals/CreateBonusHunt.vue";
@@ -46,7 +51,27 @@ const hunts = computed(() => {
 </script>
 <template>
   <div class="flex-1 p-8 w-full">
-    <PageTitle title="Bonushunts" />
+    <div class="flex justify-between sm:items-center flex-col sm:flex-row">
+      <PageTitle title="Bonushunts" />
+
+      <div class="flex items-center gap-5 mb-8">
+        <button
+          @click="copyWidgetUrl()"
+          class="flex items-center text-white/70 gap-2 hover:text-white"
+        >
+          <CopyIcon class="w-5" />
+          <span class="text-sm">Copy widget url</span>
+        </button>
+
+        <button
+          @click="toast.info('Coming soon!')"
+          class="flex items-center text-white/70 gap-2 hover:text-white"
+        >
+          <PaintCanIcon class="w-4" />
+          <span class="text-sm">Edit theme</span>
+        </button>
+      </div>
+    </div>
 
     <div class="flex flex-col sm:flex-row sm:gap-12 gap-6">
       <div
@@ -95,27 +120,6 @@ const hunts = computed(() => {
       </div>
     </div>
 
-    <!-- Actions  -->
-    <div
-      class="mt-10 flex flex-wrap gap-5 justify-center"
-      v-if="userStore.user"
-    >
-      <button class="w-full sm:w-1/3 rounded text-white bg-[#0094ff] py-2">
-        Edit theme (Coming soon)
-      </button>
-
-      <button
-        @click="copyWidgetUrl"
-        class="w-full sm:w-1/3 rounded text-white bg-[#1a1d21] py-2"
-      >
-        Copy widget url
-      </button>
-
-      <button class="w-full sm:w-1/3 rounded text-white bg-red-500 py-2">
-        Delete all data (Coming soon)
-      </button>
-    </div>
-
     <div
       class="mt-10 mb-2.5 flex justify-between items-center text-white"
       v-if="userStore.user"
@@ -159,10 +163,15 @@ const hunts = computed(() => {
             <td class="px-6 py-4">{{ v.end ? `${v.end}€` : "-" }}</td>
             <td class="px-6 py-4 flex gap-5">
               <RouterLink :to="'/dashboard/hunts/' + v._id">
-                <i class="bx bx-show-alt text-lg"></i>
+                <ShowIcon class="w-5 text-white/50" />
               </RouterLink>
+
+              <button>
+                <EditIcon class="w-5 text-white/50" />
+              </button>
+
               <button @click="huntsStore.deleteHunt(v._id)">
-                <i class="bx bx-trash text-red-500 text-lg"></i>
+                <TrashIcon class="w-5 text-red-500" />
               </button>
             </td>
           </tr>
