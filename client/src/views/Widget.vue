@@ -29,11 +29,10 @@ socket.on("hunt", (args) => {
 
 <template>
   <Widget
-    v-if="huntData"
     :data="{
       start: huntData?.start,
-      winnings: huntData.winnings,
-      reqavg: huntData.reqavg,
+      winnings: huntData?.winnings,
+      reqavg: huntData?.reqavg,
       bonuses: huntData?.bonuses || [],
     }"
     :colors="{

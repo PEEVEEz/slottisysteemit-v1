@@ -3,14 +3,12 @@ import type { IBonus } from "@/types";
 import { Vue3Marquee } from "vue3-marquee";
 
 const props = defineProps<{
-  data:
-    | {
-        start: number;
-        reqavg?: string | number;
-        winnings?: string | number;
-        bonuses: IBonus[];
-      }
-    | undefined;
+  data: {
+    start?: number;
+    reqavg?: string | number;
+    winnings?: string | number;
+    bonuses: IBonus[];
+  };
   colors?: { background?: string; text?: string; text2?: string };
 }>();
 
