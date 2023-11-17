@@ -95,25 +95,6 @@ export const useHuntsStore = defineStore("hunts", () => {
     }
   };
 
-  const startRedeeming = async (hunt_id?: string) => {
-    if (!hunt_id || !hunts.value) return;
-
-    try {
-      const result = await api.post(
-        "hunt/start",
-        { hunt_id },
-        { withCredentials: true }
-      );
-
-      const huntIndex = hunts.value?.findIndex((hunt) => hunt._id === hunt_id);
-      if (huntIndex === undefined) return;
-
-      hunts.value[huntIndex].redeeming = result.data;
-    } catch (error) {
-      handleError(error, "Error starting hunt redemption");
-    }
-  };
-
   const deleteBonus = async (huntId?: string, bonusId?: string) => {
     if (!huntId || !bonusId || !hunts.value) return;
 
@@ -126,7 +107,7 @@ export const useHuntsStore = defineStore("hunts", () => {
         const huntIndex = hunts.value?.findIndex((hunt) => hunt._id === huntId);
         if (huntIndex === undefined) return;
 
-        hunts.value[huntIndex].bonuses = result.data;
+        hunts.value[huntIndex] = result.data;
       }
     } catch (error) {
       handleError(error, "Error deleting bonus");
@@ -146,7 +127,7 @@ export const useHuntsStore = defineStore("hunts", () => {
       if (result.status === 200) {
         const huntIndex = hunts.value.findIndex((hunt) => hunt._id === huntId);
         if (huntIndex === -1) return;
-        hunts.value[huntIndex].bonuses = result.data;
+        hunts.value[huntIndex] = result.data;
       }
     } catch (error) {
       handleError(error, "Error adding bonus");
@@ -193,7 +174,6 @@ export const useHuntsStore = defineStore("hunts", () => {
     deleteHunt,
     deleteBonus,
     updateHunt,
-    startRedeeming,
     updateBonusBet,
   };
 });

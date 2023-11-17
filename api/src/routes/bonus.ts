@@ -42,15 +42,15 @@ export const registerBonusRoutes = (
           bonuses: bonuses,
         });
 
-        sendMessageToAllWithSameKey(
-          req.user._id,
-          "hunt",
-          getFixedHuntData({
-            start: hunt.start,
-            bonuses,
-          })
-        );
-        return bonuses;
+        const fixedHuntData = getFixedHuntData({
+          _id: hunt._id.toString(),
+          name: hunt.name,
+          start: hunt.start,
+          bonuses,
+        });
+
+        sendMessageToAllWithSameKey(req.user._id, "hunt", fixedHuntData);
+        return fixedHuntData;
       } catch (error) {
         console.error(error);
         return reply.status(StatusCodes.INTERNAL_SERVER_ERROR).send({
@@ -92,15 +92,15 @@ export const registerBonusRoutes = (
 
         if (!hunt) return;
 
-        sendMessageToAllWithSameKey(
-          req.user._id,
-          "hunt",
-          getFixedHuntData({
-            start: hunt.start,
-            bonuses: hunt.bonuses,
-          })
-        );
-        return hunt.bonuses;
+        const fixedHuntData = getFixedHuntData({
+          _id: hunt._id.toString(),
+          name: hunt.name,
+          start: hunt.start,
+          bonuses: hunt.bonuses,
+        });
+
+        sendMessageToAllWithSameKey(req.user._id, "hunt", fixedHuntData);
+        return fixedHuntData;
       } catch (e) {
         console.error(e);
         return reply.status(StatusCodes.INTERNAL_SERVER_ERROR).send({
@@ -179,16 +179,16 @@ export const registerBonusRoutes = (
           bonuses: bonuses,
         });
 
-        sendMessageToAllWithSameKey(
-          req.user._id,
-          "hunt",
-          getFixedHuntData({
-            start: hunt.start,
-            bonuses,
-          })
-        );
+        const fixedHuntData = getFixedHuntData({
+          _id: hunt._id.toString(),
+          name: hunt.name,
+          start: hunt.start,
+          bonuses: bonuses,
+        });
 
-        return bonuses;
+        sendMessageToAllWithSameKey(req.user._id, "hunt", fixedHuntData);
+
+        return fixedHuntData;
       } catch (e) {
         console.error(e);
         reply.status(StatusCodes.INTERNAL_SERVER_ERROR).send({

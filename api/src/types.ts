@@ -26,6 +26,9 @@ export type SocketConnections = {
 };
 
 export type Hunt = {
+  _id?: string;
+  name?: string;
+
   start: number;
   bonuses: any[];
 

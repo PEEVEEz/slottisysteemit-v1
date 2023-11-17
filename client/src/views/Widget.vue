@@ -22,8 +22,6 @@ socket.connect();
 
 socket.on("hunt", (args) => {
   huntData.value = args;
-
-  console.log(args);
 });
 </script>
 

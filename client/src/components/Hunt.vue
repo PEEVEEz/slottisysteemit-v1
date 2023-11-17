@@ -36,8 +36,12 @@ const { open: openUpdateHunt, close: closeUpdateHunt } = useModal({
       {{ props.hunt.name }}
     </th>
     <td class="px-6 py-4">{{ props.hunt.start }}€</td>
-    <td class="px-6 py-4">{{ props.hunt.end ? `${props.hunt.end}€` : "-" }}</td>
-    <td class="px-6 py-4">{{ props.hunt.end ? `${props.hunt.end}€` : "-" }}</td>
+    <td class="px-6 py-4">
+      {{ props.hunt.reqavg ? `${props.hunt.reqavg}x` : "-" }}
+    </td>
+    <td class="px-6 py-4">
+      {{ props.hunt.winnings ? `${props.hunt.winnings}€` : "-" }}
+    </td>
     <td class="px-6 py-4 flex gap-5">
       <RouterLink :to="'/dashboard/hunts/' + props.hunt._id">
         <ShowIcon class="w-5 text-white/50" />

@@ -5,6 +5,7 @@ import { authMiddleware } from "../middlewares/auth";
 import { sendMessageToAllWithSameKey } from "../socket";
 import { FastifyPluginOptions } from "fastify/types/plugin";
 import { StatusCodes, getReasonPhrase } from "http-status-codes";
+import { getFixedHuntData } from "../utils/hunt";
 
 export const registerHuntRoutes = (
   instance: FastifyInstanceType,
@@ -56,7 +57,21 @@ export const registerHuntRoutes = (
   );
 
   instance.get("/", async (req: FastifyRequest<{ Body: { _id: string } }>) => {
-    return await database.models.hunt.find({ user_id: req.user._id });
+    var fixedHunts = [];
+    var hunts = await database.models.hunt.find({ user_id: req.user._id });
+
+    for (let i = 0; i < hunts.length; i++) {
+      const element = hunts[i];
+
+      fixedHunts[i] = getFixedHuntData({
+        _id: element._id.toString(),
+        name: element.name,
+        start: element.start,
+        bonuses: element.bonuses,
+      });
+    }
+
+    return fixedHunts;
   });
 
   instance.put(

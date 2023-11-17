@@ -49,7 +49,7 @@ const { open: openAddBonus, close: closeAddBonus } = useModal({
         :to="'/dashboard/hunts/' + thisHunt?._id + '/redeem'"
         class="rounded text-sm text-white bg-green-500 px-4 py-1.5"
       >
-        Start redeeming
+        Redeeming
       </RouterLink>
 
       <button
