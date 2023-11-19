@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import HouseIcon from "./icons/House.vue";
+import LogoutIcon from "./icons/Logout.vue";
 import TargetIcon from "./icons/Target.vue";
 import DiscordIcon from "./icons/Discord.vue";
 import { useUserStore } from "../stores/user";
@@ -58,6 +59,22 @@ const isLoggedIn = computed(() => userStore.user);
         <OverlayIcon class="w-5" />
         <span class="text-sm font-medium">Overlays</span>
       </RouterLink>
+
+      <div v-if="userStore.user" class="flex items-center gap-3">
+        <img
+          width="30"
+          class="rounded-full"
+          :src="`https://cdn.discordapp.com/avatars/${userStore.user.id}/${userStore.user.avatar}.webp`"
+        />
+        <button
+          @click="userStore.logout()"
+          to="/overlays"
+          class="flex items-center gap-2 hover:text-red-400 text-red-500"
+        >
+          <LogoutIcon class="w-5" />
+          <span class="text-sm font-medium">Logout</span>
+        </button>
+      </div>
     </div>
   </div>
 </template>
