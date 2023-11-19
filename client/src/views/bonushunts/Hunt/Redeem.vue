@@ -27,7 +27,7 @@ const handleNextAndPreviousClick = (value: number): void => {
 <template>
   <div class="flex justify-between mb-4">
     <div class="text-white flex items-center">
-      <RouterLink :to="'/dashboard/hunts/' + thisHunt?._id"
+      <RouterLink :to="'/hunts/' + thisHunt?._id"
         ><i class="bx bx-chevron-left text-3xl"></i>
       </RouterLink>
       <span class="text-xl font-medium"
@@ -39,8 +39,6 @@ const handleNextAndPreviousClick = (value: number): void => {
         }}
       </span>
     </div>
-
-    <div v-if="!thisHunt?.redeeming" class="flex items-center gap-4"></div>
   </div>
 
   <div class="border border-white/5 rounded" v-if="thisHunt">

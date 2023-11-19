@@ -11,10 +11,9 @@ const api_url = import.meta.env.VITE_API_URL;
 </script>
 
 <template>
-  <div class="mx-auto max-w-7xl flex flex-col h-full px-3">
-    <Navbar />
+  <div class="flex flex-col h-full">
     <div
-      class="mt-36 flex sm:justify-between gap-5 flex-col sm:flex-row flex-1"
+      class="mt-32 flex sm:justify-between gap-5 flex-col sm:flex-row flex-1"
     >
       <div class="flex flex-col gap-3.5">
         <div class="text-5xl text-white max-w-lg font-medium">
@@ -42,7 +41,7 @@ const api_url = import.meta.env.VITE_API_URL;
             class="bg-[#1a1d21] w-1/2 py-2 rounded text-center"
             to="/dashboard"
           >
-            Dashboard
+            Features
           </RouterLink>
         </div>
       </div>

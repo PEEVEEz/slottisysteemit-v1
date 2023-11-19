@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { useRoute } from "vue-router";
 import { io } from "socket.io-client";
-import Widget from "../components/Widget.vue";
+import { useRoute } from "vue-router";
+import HuntTracker from "@/components/widgets/HuntTracker.vue";
 
 const route = useRoute();
 const huntData = ref<{
@@ -26,7 +26,7 @@ socket.on("hunt", (args) => {
 </script>
 
 <template>
-  <Widget
+  <HuntTracker
     :data="{
       start: huntData?.start,
       winnings: huntData?.winnings,

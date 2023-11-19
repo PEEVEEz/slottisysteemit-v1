@@ -10,55 +10,51 @@ const router = createRouter({
       component: () => import("../views/LandingPage.vue"),
     },
     {
-      path: "/dashboard",
-      name: "dashboard",
-      component: () => import("../views/dashboard/Dashboard.vue"),
+      path: "/hunts",
+      name: "hunts",
       meta: { requiresAuth: true },
+      component: () => import("@/views/bonushunts/Hunts.vue"),
+    },
+    {
+      path: "/hunts/:id",
+      name: "hunt",
+      meta: { requiresAuth: true },
+      component: () => import("@/views/bonushunts/Hunt.vue"),
       children: [
         {
           path: "",
-          component: () => import("@/views/dashboard/DashboardHome.vue"),
+          component: () => import("@/views/bonushunts/Hunt/Bonuses.vue"),
         },
         {
-          path: "hunts",
-          component: () => import("../views/dashboard/Bonustracker/Hunts.vue"),
-        },
-        {
-          path: "hunts/:id",
-          component: () => import("../views/dashboard/Bonustracker/Hunt.vue"),
-          children: [
-            {
-              path: "",
-              component: () =>
-                import("@/views/dashboard/Bonustracker/Hunt/Bonuses.vue"),
-            },
-            {
-              path: "redeem",
-              component: () =>
-                import("@/views/dashboard/Bonustracker/Hunt/Redeem.vue"),
-            },
-          ],
+          path: "redeem",
+          component: () => import("@/views/bonushunts/Hunt/Redeem.vue"),
         },
       ],
     },
     {
-      path: "/widget/:id",
-      name: "widget",
-      component: () => import("../views/Widget.vue"),
+      path: "/widgets",
+      name: "widgets",
+      meta: { widget: true },
+      children: [
+        {
+          path: "tracker/:id",
+          component: () => import("@/views/widgets/HuntTracker.vue"),
+        },
+      ],
     },
   ],
 });
 
 router.beforeEach(async (to) => {
-  if (to.meta.requiresAuth || to.name === "home") {
-    const userStore = useUserStore();
-    if (!userStore.initialized) await userStore.init();
+  if (to.meta.widget) return;
 
-    if (!userStore.user && to.name !== "home") {
-      return {
-        path: "/",
-      };
-    }
+  const userStore = useUserStore();
+  if (!userStore.initialized) await userStore.init();
+
+  if (to.meta.requiresAuth && !userStore.user) {
+    return {
+      path: "/",
+    };
   }
 });
 

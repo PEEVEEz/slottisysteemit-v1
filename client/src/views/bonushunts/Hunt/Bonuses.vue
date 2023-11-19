@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useRoute } from "vue-router";
+import { useModal } from "vue-final-modal";
 import Bonus from "@/components/Bonus.vue";
 import { useHuntsStore } from "@/stores/hunts";
-import { useModal } from "vue-final-modal";
 import AddBonus from "@/components/modals/AddBonus.vue";
 
 const route = useRoute();
@@ -30,7 +30,7 @@ const { open: openAddBonus, close: closeAddBonus } = useModal({
 <template>
   <div class="flex justify-between mb-4">
     <div class="text-white flex items-center">
-      <RouterLink to="/dashboard/hunts"
+      <RouterLink to="/hunts"
         ><i class="bx bx-chevron-left text-3xl"></i>
       </RouterLink>
       <span class="text-xl font-medium"
@@ -46,7 +46,7 @@ const { open: openAddBonus, close: closeAddBonus } = useModal({
     <div v-if="thisHunt" class="flex items-center gap-4">
       <RouterLink
         v-if="thisHunt?.bonuses.length > 0"
-        :to="'/dashboard/hunts/' + thisHunt?._id + '/redeem'"
+        :to="'/hunts/' + thisHunt?._id + '/redeem'"
         class="rounded text-sm text-white bg-green-500 px-4 py-1.5"
       >
         Redeeming

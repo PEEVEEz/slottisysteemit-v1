@@ -3,6 +3,8 @@ import { computed } from "vue";
 import type { IBonus } from "@/types";
 import { Vue3Marquee } from "vue3-marquee";
 
+const MAX_GAME_NAME_LENGTH = 25;
+
 const props = defineProps<{
   data: {
     start?: number;
@@ -25,6 +27,13 @@ const getColor = (key: "primary" | "text" | "secondary"): string => {
   }
 
   return `#${props.colors[key] || defaultColors[key]}`;
+};
+
+const fixGameName = (game_name: string) => {
+  if (game_name.length > MAX_GAME_NAME_LENGTH) {
+    return game_name.slice(0, MAX_GAME_NAME_LENGTH) + "...";
+  }
+  return game_name;
 };
 
 const openedBonusesAmount = computed(() => {
@@ -100,7 +109,7 @@ const openedBonusesAmount = computed(() => {
             v-for="(v, k) in props.data?.bonuses"
           >
             <div class="w-5">{{ k + 1 }}.</div>
-            <div class="w-2/3">{{ v.game_name }}</div>
+            <div class="w-2/3">{{ fixGameName(v.game_name) }}</div>
 
             <div class="w-3/12 text-end">{{ v.bet }}€</div>
             <div class="w-3/12 text-end">
@@ -118,7 +127,7 @@ const openedBonusesAmount = computed(() => {
             v-for="(v, k) in props.data?.bonuses"
           >
             <div class="w-5">{{ k + 1 }}.</div>
-            <div class="w-2/3">{{ v.game_name }}</div>
+            <div class="w-2/3">{{ fixGameName(v.game_name) }}</div>
 
             <div class="w-3/12 text-end">{{ v.bet }}€</div>
             <div class="w-3/12 text-end">
@@ -137,9 +146,10 @@ const openedBonusesAmount = computed(() => {
         <div
           class="w-full rounded"
           :style="{
-            height: `${
-              (openedBonusesAmount / props.data.bonuses.length) * 100
-            }%`,
+            height:
+              props.data.bonuses.length >= 0
+                ? `${(openedBonusesAmount / props.data.bonuses.length) * 100}%`
+                : '0%',
             background: getColor('secondary'),
           }"
         ></div>

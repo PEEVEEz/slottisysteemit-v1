@@ -6,7 +6,7 @@ huntStore.init();
 </script>
 
 <template>
-  <div class="p-8 flex-1 w-full flex flex-col" v-if="!huntStore.loading">
+  <div class="flex-1 w-full flex flex-col" v-if="!huntStore.loading">
     <RouterView />
   </div>
 </template>

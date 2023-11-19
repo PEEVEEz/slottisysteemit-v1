@@ -2,16 +2,14 @@
 import { computed } from "vue";
 import Hunt from "@/components/Hunt.vue";
 import { useModal } from "vue-final-modal";
+import { useUserStore } from "@/stores/user";
+import { useHuntsStore } from "@/stores/hunts";
 import { useToast } from "vue-toast-notification";
-import PageTitle from "@/components/PageTitle.vue";
 import CopyIcon from "@/components/icons/Copy.vue";
-import { useUserStore } from "../../../stores/user";
-import { useHuntsStore } from "../../../stores/hunts";
 import Multiply from "@/components/icons/Multiply.vue";
-import PaintCanIcon from "@/components/icons/PaintCan.vue";
-import DollarIcon from "../../../components/icons/Dollar.vue";
-import TargetIcon from "../../../components/icons/Target.vue";
-import CreateBonusHunt from "../../..//components/modals/CreateBonusHunt.vue";
+import DollarIcon from "@/components/icons/Dollar.vue";
+import TargetIcon from "@/components/icons/Target.vue";
+import CreateBonusHunt from "@/components/modals/CreateBonusHunt.vue";
 
 const toast = useToast();
 const userStore = useUserStore();
@@ -48,29 +46,7 @@ const hunts = computed(() => {
 });
 </script>
 <template>
-  <div class="flex-1 p-8 w-full">
-    <div class="flex justify-between sm:items-center flex-col sm:flex-row">
-      <PageTitle title="Bonushunts" />
-
-      <div class="flex items-center gap-5 mb-8">
-        <button
-          @click="copyWidgetUrl()"
-          class="flex items-center text-white/70 gap-2 hover:text-white"
-        >
-          <CopyIcon class="w-5" />
-          <span class="text-sm">Copy widget url</span>
-        </button>
-
-        <button
-          @click="toast.info('Coming soon!')"
-          class="flex items-center text-white/70 gap-2 hover:text-white"
-        >
-          <PaintCanIcon class="w-4" />
-          <span class="text-sm">Edit theme</span>
-        </button>
-      </div>
-    </div>
-
+  <div class="flex-1 w-full mt-5">
     <div class="flex flex-col sm:flex-row sm:gap-12 gap-6">
       <div
         class="flex justify-between bg-[#1a1d21] md:w-1/3 w-full p-3 rounded"
@@ -119,17 +95,27 @@ const hunts = computed(() => {
     </div>
 
     <div
-      class="mt-10 mb-2.5 flex justify-between items-center text-white"
+      class="mt-10 mb-2.5 flex flex-col sm:flex-row sm:justify-between sm:items-center text-white"
       v-if="userStore.user"
     >
       <span class="text-xl font-medium">Bonus hunts</span>
 
-      <button
-        @click="openCreateHunt"
-        class="rounded text-sm text-white bg-[#1a1d21] px-3 py-1.5"
-      >
-        New bonushunt
-      </button>
+      <div class="flex items-center gap-4">
+        <button
+          @click="copyWidgetUrl()"
+          class="flex items-center text-white/70 gap-2 hover:text-white"
+        >
+          <CopyIcon class="w-5" />
+          <span class="text-sm">Copy widget url</span>
+        </button>
+
+        <button
+          @click="openCreateHunt"
+          class="rounded text-sm text-white bg-[#1a1d21] px-3 py-1.5"
+        >
+          New bonushunt
+        </button>
+      </div>
     </div>
 
     <div
