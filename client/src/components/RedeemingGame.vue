@@ -26,7 +26,7 @@ const onPrevious = () => {
   props.onPrevious();
 };
 const onSave = () => {
-  if (!props.bonus._id) return;
+  if (!props.bonus._id || (props.bonus.payout || 0) === payout.value) return;
   huntStore.redeemBonus(props.hunt_id, props.bonus._id, payout.value);
 };
 const onNext = () => {
