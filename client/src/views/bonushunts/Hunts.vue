@@ -35,7 +35,7 @@ const { open: openCreateHunt, close: closeCreateHunt } = useModal({
 
 const copyWidgetUrl = () => {
   navigator.clipboard.writeText(
-    `${window.location.origin}/widget/${userStore.user?._id}`
+    `${window.location.origin}/widgets/tracker/${userStore.user?._id}`
   );
 
   toast.success("Link copied to clipboard");
