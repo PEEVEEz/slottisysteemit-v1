@@ -2,12 +2,15 @@ import api from "@/api";
 import { ref } from "vue";
 import { defineStore } from "pinia";
 import type { IBonus, IHunt, INewHunt } from "@/types";
+import { useToast } from "vue-toast-notification";
 
 export const useHuntsStore = defineStore("hunts", () => {
+  const toast = useToast();
   const loading = ref(true);
   const hunts = ref<IHunt[] | null>(null);
 
   const handleError = (error: any, message: string) => {
+    toast.error(message);
     console.error(message, error);
   };
 
@@ -165,15 +168,15 @@ export const useHuntsStore = defineStore("hunts", () => {
   };
 
   return {
+    init,
     hunts,
     loading,
-    redeemBonus,
-    init,
-    createHunt,
     addBonus,
-    deleteHunt,
-    deleteBonus,
     updateHunt,
+    deleteHunt,
+    createHunt,
+    deleteBonus,
+    redeemBonus,
     updateBonusBet,
   };
 });

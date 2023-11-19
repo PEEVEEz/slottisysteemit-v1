@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const props = defineProps<{ value: number }>();
+const props = defineProps<{ value: number; enterPressed?: () => void }>();
 
 const emit = defineEmits<{
   (e: "update:modelValue", value: number): void;
@@ -8,6 +8,12 @@ const emit = defineEmits<{
 const handleChange = (e: any) => {
   emit("update:modelValue", Number(e.target.value));
 };
+
+const handlePress = () => {
+  if (props.enterPressed) {
+    props.enterPressed();
+  }
+};
 </script>
 
 <template>
@@ -15,6 +21,7 @@ const handleChange = (e: any) => {
     <input
       @input="handleChange"
       :value="props.value"
+      @keyup.enter="handlePress()"
       type="number"
       class="w-full bg-[#1a1d21] p-1.5 outline-none rounded"
     />

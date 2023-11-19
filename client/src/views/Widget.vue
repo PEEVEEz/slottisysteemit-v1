@@ -34,9 +34,9 @@ socket.on("hunt", (args) => {
       bonuses: huntData?.bonuses || [],
     }"
     :colors="{
-      background: route.query.background?.toString(),
+      primary: route.query.primary?.toString(),
       text: route.query.text?.toString(),
-      text2: route.query.text2?.toString(),
+      secondary: route.query.secondary?.toString(),
     }"
   />
 </template>

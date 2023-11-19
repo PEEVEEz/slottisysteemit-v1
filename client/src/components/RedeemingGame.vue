@@ -37,6 +37,11 @@ const onNext = () => {
 
   props.onNext();
 };
+
+const handleEnterPress = () => {
+  onSave();
+  onNext();
+};
 </script>
 
 <template>
@@ -46,7 +51,11 @@ const onNext = () => {
     <div class="flex flex-col gap-1">
       <span>Payout</span>
 
-      <InputCurrency :value="payout" v-model="payout" />
+      <InputCurrency
+        :enterPressed="handleEnterPress"
+        :value="payout"
+        v-model="payout"
+      />
     </div>
 
     <div class="flex gap-4 mt-5 mb-3">
