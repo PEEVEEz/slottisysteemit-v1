@@ -28,7 +28,7 @@ const { open: openAddBonus, close: closeAddBonus } = useModal({
 });
 </script>
 <template>
-  <div class="flex justify-between mb-4">
+  <div class="flex justify-between mb-2">
     <div class="text-white flex items-center">
       <RouterLink to="/hunts"
         ><i class="bx bx-chevron-left text-3xl"></i>
