@@ -27,11 +27,12 @@ const toggled = ref(false);
     </RouterLink>
 
     <div
-      class="flex flex-col md:items-center gap-7 transition-all text-white/80 z-50 fixed left-0 top-16 p-4 md:p-0 bg-[#1a1d21] border border-white/5 w-full md:border-none md:bg-transparent md:static md:flex-row md:w-max"
-      :class="{ 'hidden md:flex': !toggled }"
+      class="flex flex-col md:items-center gap-7 transition-all text-white/80 z-50 fixed left-0 top-[4.5rem] p-4 md:p-0 bg-[#1a1d21] border border-white/5 w-full md:border-none md:bg-transparent md:static md:flex-row md:w-max"
+      :class="{ 'md:flex left-[-70rem]': !toggled }"
     >
       <RouterLink
         v-if="isLoggedIn"
+        @click="toggled = false"
         to="/"
         class="flex items-center gap-2 hover:text-white"
       >
@@ -51,6 +52,7 @@ const toggled = ref(false);
       <RouterLink
         v-if="isLoggedIn"
         to="/hunts"
+        @click="toggled = false"
         class="flex items-center gap-2 hover:text-white"
       >
         <TargetIcon class="w-5" />
@@ -60,6 +62,7 @@ const toggled = ref(false);
       <RouterLink
         v-if="isLoggedIn"
         to="/overlays"
+        @click="toggled = false"
         class="flex items-center gap-2 hover:text-white"
       >
         <OverlayIcon class="w-5" />

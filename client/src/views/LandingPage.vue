@@ -13,7 +13,7 @@ const api_url = import.meta.env.VITE_API_URL;
 <template>
   <div class="flex flex-col h-full">
     <div
-      class="mt-32 flex sm:justify-between gap-5 flex-col sm:flex-row flex-1"
+      class="md:mt-32 mt-24 flex sm:justify-between gap-5 flex-col sm:flex-row flex-1"
     >
       <div class="flex flex-col gap-3.5">
         <div class="text-5xl text-white max-w-lg font-medium">
