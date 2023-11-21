@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import HouseIcon from "./icons/House.vue";
 import LogoutIcon from "./icons/Logout.vue";
 import TargetIcon from "./icons/Target.vue";
@@ -7,10 +7,13 @@ import DiscordIcon from "./icons/Discord.vue";
 import { useUserStore } from "../stores/user";
 import OverlayIcon from "./icons/Overlay.vue";
 import SlotMachine from "./icons/SlotMachine.vue";
+import MenuIcon from "./icons/Menu.vue";
 
 const userStore = useUserStore();
 const api_url = import.meta.env.VITE_API_URL;
 const isLoggedIn = computed(() => userStore.user);
+
+const toggled = ref(false);
 </script>
 
 <template>
@@ -23,7 +26,10 @@ const isLoggedIn = computed(() => userStore.user);
       <span class="text-2xl uppercase font-semibold">Slottisysteemit</span>
     </RouterLink>
 
-    <div class="flex items-center gap-7 text-white/80">
+    <div
+      class="flex flex-col md:items-center gap-7 transition-all text-white/80 z-50 fixed left-0 top-16 p-4 md:p-0 bg-[#1a1d21] border border-white/5 w-full md:border-none md:bg-transparent md:static md:flex-row md:w-max"
+      :class="{ 'hidden md:flex': !toggled }"
+    >
       <RouterLink
         v-if="isLoggedIn"
         to="/"
@@ -75,6 +81,12 @@ const isLoggedIn = computed(() => userStore.user);
           <span class="text-sm font-medium">Logout</span>
         </button>
       </div>
+    </div>
+
+    <div class="block md:hidden">
+      <button @click="toggled = !toggled" class="flex items-center">
+        <MenuIcon class="w-7" />
+      </button>
     </div>
   </div>
 </template>

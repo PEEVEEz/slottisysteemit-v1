@@ -39,7 +39,7 @@ const api_url = import.meta.env.VITE_API_URL;
           <RouterLink
             v-else
             class="bg-[#1a1d21] w-1/2 py-2 rounded text-center"
-            to="/dashboard"
+            to="/"
           >
             Features
           </RouterLink>

@@ -32,6 +32,11 @@ const router = createRouter({
       ],
     },
     {
+      path: "/overlays",
+      name: "overlays",
+      component: () => import("@/views/overlays/Overlays.vue"),
+    },
+    {
       path: "/widgets",
       name: "widgets",
       meta: { widget: true },
