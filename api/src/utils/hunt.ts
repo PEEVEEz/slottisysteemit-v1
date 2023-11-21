@@ -9,7 +9,7 @@ export const getFixedHuntData = (hunt: Hunt) => {
   for (let i = 0; i < hunt.bonuses.length; i++) {
     const bonus = hunt.bonuses[i];
 
-    if (bonus.payout) {
+    if (bonus.payout !== undefined) {
       win += bonus.payout;
     } else {
       allOpened = false;

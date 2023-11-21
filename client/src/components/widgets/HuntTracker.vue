@@ -131,7 +131,7 @@ const openedBonusesAmount = computed(() => {
 
             <div class="w-3/12 text-end">{{ v.bet }}€</div>
             <div class="w-3/12 text-end">
-              {{ v.payout ? `${v.payout}€` : "" }}
+              {{ v.payout !== undefined ? `${v.payout}€` : "" }}
             </div>
           </div>
         </div>

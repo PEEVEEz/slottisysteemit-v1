@@ -26,7 +26,7 @@ const onPrevious = () => {
   props.onPrevious();
 };
 const onSave = () => {
-  if (!props.bonus._id || (props.bonus.payout || 0) === payout.value) return;
+  if (!props.bonus._id || props.bonus.payout === payout.value) return;
   huntStore.redeemBonus(props.hunt_id, props.bonus._id, payout.value);
 };
 const onNext = () => {
@@ -63,7 +63,7 @@ const handleEnterPress = () => {
         Previous
       </button>
       <button
-        :class="{ 'cursor-not-allowed': (props.bonus.payout || 0) === payout }"
+        :class="{ 'cursor-not-allowed': props.bonus.payout === payout }"
         class="w-full bg-[#0094ff] py-1.5 rounded"
         @click="onSave()"
       >
