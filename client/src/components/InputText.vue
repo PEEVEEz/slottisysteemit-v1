@@ -15,7 +15,7 @@ const handleChange = (e: any) => {
     <input
       @input="handleChange"
       :value="props.value"
-      class="w-full bg-[#1a1d21] p-1.5 outline-none rounded"
+      class="w-full bg-[#1a1d21]/30 p-1.5 outline-none rounded"
     />
   </div>
 </template>

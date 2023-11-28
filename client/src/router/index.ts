@@ -16,6 +16,11 @@ const router = createRouter({
       component: () => import("@/views/bonushunts/Hunts.vue"),
     },
     {
+      path: "/hunts/theme",
+      name: "tracker-theme",
+      component: () => import("@/views/bonushunts/ThemeEdit.vue"),
+    },
+    {
       path: "/hunts/:id",
       name: "hunt",
       meta: { requiresAuth: true },
@@ -23,11 +28,11 @@ const router = createRouter({
       children: [
         {
           path: "",
-          component: () => import("@/views/bonushunts/Hunt/Bonuses.vue"),
+          component: () => import("@/views/bonushunts/hunt/Bonuses.vue"),
         },
         {
           path: "redeem",
-          component: () => import("@/views/bonushunts/Hunt/Redeem.vue"),
+          component: () => import("@/views/bonushunts/hunt/Redeem.vue"),
         },
       ],
     },

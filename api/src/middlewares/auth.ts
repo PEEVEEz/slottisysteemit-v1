@@ -30,6 +30,7 @@ export const authMiddleware = async (
 
     req.user = discordUser;
     req.user._id = user._id;
+    req.user.tracker_colors = user.tracker_colors || {};
   } catch (e: any) {
     reply.status(StatusCodes.UNAUTHORIZED).send({
       message: e.message,

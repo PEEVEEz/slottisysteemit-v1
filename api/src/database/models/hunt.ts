@@ -24,7 +24,6 @@ const HuntSchema = new Schema(
       type: Number,
       required: true,
     },
-    redeeming: Boolean,
     result: Number,
     bonuses: {
       type: [BonusSchema],

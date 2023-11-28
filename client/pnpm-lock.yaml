@@ -26,6 +26,9 @@ dependencies:
   vue:
     specifier: ^3.3.4
     version: 3.3.4
+  vue-color-kit:
+    specifier: ^1.0.6
+    version: 1.0.6(vue@3.3.4)
   vue-final-modal:
     specifier: ^4.4.5
     version: 4.4.5(@vueuse/core@10.5.0)(@vueuse/integrations@10.5.0)(focus-trap@7.5.4)(vue@3.3.4)
@@ -1660,6 +1663,14 @@ packages:
     optionalDependencies:
       fsevents: 2.3.3
     dev: true
+
+  /vue-color-kit@1.0.6(vue@3.3.4):
+    resolution: {integrity: sha512-56oSUp8hGIZ3E4ayZLqTDAb2C7VzaWAC1EVUsZEvPCD2wiiiFd2L2BiEGN1ingfz538sYWKNXxMZQGslqbMiBg==}
+    peerDependencies:
+      vue: ^3.0.5
+    dependencies:
+      vue: 3.3.4
+    dev: false
 
   /vue-demi@0.14.6(vue@3.3.4):
     resolution: {integrity: sha512-8QA7wrYSHKaYgUxDA5ZC24w+eHm3sYCbp0EzcDwKqN3p6HqtTCGR/GVsPyZW92unff4UlcSh++lmqDWN3ZIq4w==}

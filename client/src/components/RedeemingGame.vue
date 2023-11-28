@@ -25,9 +25,9 @@ const onPrevious = () => {
 
   props.onPrevious();
 };
-const onSave = () => {
+const onSave = async () => {
   if (!props.bonus._id || props.bonus.payout === payout.value) return;
-  huntStore.redeemBonus(props.hunt_id, props.bonus._id, payout.value);
+  await huntStore.redeemBonus(props.hunt_id, props.bonus._id, payout.value);
 };
 const onNext = () => {
   if ((props.bonus.payout || 0) !== payout.value) {
@@ -38,8 +38,8 @@ const onNext = () => {
   props.onNext();
 };
 
-const handleEnterPress = () => {
-  onSave();
+const handleEnterPress = async () => {
+  await onSave();
   onNext();
 };
 </script>
@@ -59,7 +59,7 @@ const handleEnterPress = () => {
     </div>
 
     <div class="flex gap-4 mt-5 mb-3">
-      <button class="w-full bg-[#1a1d21] py-1.5 rounded" @click="onPrevious">
+      <button class="w-full bg-[#1a1d21]/50 py-1.5 rounded" @click="onPrevious">
         Previous
       </button>
       <button
@@ -69,7 +69,7 @@ const handleEnterPress = () => {
       >
         Save
       </button>
-      <button class="w-full bg-[#1a1d21] py-1.5 rounded" @click="onNext">
+      <button class="w-full bg-[#1a1d21]/50 py-1.5 rounded" @click="onNext">
         Next
       </button>
     </div>

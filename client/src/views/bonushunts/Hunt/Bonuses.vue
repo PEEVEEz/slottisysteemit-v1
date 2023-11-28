@@ -47,14 +47,14 @@ const { open: openAddBonus, close: closeAddBonus } = useModal({
       <RouterLink
         v-if="thisHunt?.bonuses.length > 0"
         :to="'/hunts/' + thisHunt?._id + '/redeem'"
-        class="rounded text-sm text-white bg-green-500 px-4 py-1.5"
+        class="rounded text-sm text-white bg-green-500/50 px-4 py-1.5"
       >
         Redeeming
       </RouterLink>
 
       <button
         @click="openAddBonus"
-        class="rounded text-sm text-white bg-[#1a1d21] px-4 py-1.5"
+        class="rounded text-sm text-white bg-[#1a1d21]/50 px-4 py-1.5"
       >
         Add bonus
       </button>
@@ -63,7 +63,7 @@ const { open: openAddBonus, close: closeAddBonus } = useModal({
 
   <div class="relative overflow-x-auto shadow-sm shadow-black/10 w-full">
     <table class="w-full h-full text-sm text-left text-gray-500">
-      <thead class="text-xs text-white uppercase bg-[#1a1d21]">
+      <thead class="text-xs text-white uppercase bg-[#1a1d21]/50">
         <tr>
           <th scope="col" class="px-6 py-3">Game name</th>
           <th scope="col" class="px-6 py-3">BET</th>

@@ -14,7 +14,6 @@ export interface IHunt {
   active: boolean;
   winnings?: number;
   reqavg?: string | number;
-  redeeming?: boolean;
   bonuses: IBonus[];
 }
 

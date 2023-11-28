@@ -10,6 +10,7 @@ const UserSchema = new Schema(
       type: String,
       required: true,
     },
+    tracker_colors: Object,
   },
   { timestamps: true }
 );

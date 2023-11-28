@@ -15,6 +15,7 @@ const props = defineProps<{
   colors?: { primary?: string; text?: string; secondary?: string };
 }>();
 
+console.log(props.colors);
 const defaultColors = {
   primary: "111827",
   secondary: "a78bfa",

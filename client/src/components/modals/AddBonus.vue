@@ -46,14 +46,14 @@ const handleSearch = async () => {
     <div class="mt-12 flex gap-5">
       <button
         @click="emit('cancel')"
-        class="bg-red-500 w-1/3 py-2 text-white rounded text-sm font-medium"
+        class="bg-red-500/40 w-1/3 py-2 text-white rounded text-sm font-medium"
       >
         Cancel
       </button>
 
       <button
         @click="emit('confirm', name, bet)"
-        class="bg-[#0094ff] w-full py-2 text-white rounded text-sm font-medium"
+        class="bg-[#0094ff]/40 w-full py-2 text-white rounded text-sm font-medium"
       >
         Add
       </button>

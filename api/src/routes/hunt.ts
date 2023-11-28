@@ -1,11 +1,11 @@
 import database from "../database";
 import { FastifyRequest } from "fastify";
 import { FastifyInstanceType } from "../types";
+import { getFixedHuntData } from "../utils/hunt";
 import { authMiddleware } from "../middlewares/auth";
 import { sendMessageToAllWithSameKey } from "../socket";
 import { FastifyPluginOptions } from "fastify/types/plugin";
 import { StatusCodes, getReasonPhrase } from "http-status-codes";
-import { getFixedHuntData } from "../utils/hunt";
 
 export const registerHuntRoutes = (
   instance: FastifyInstanceType,
@@ -18,78 +18,58 @@ export const registerHuntRoutes = (
   instance.delete(
     "/:id",
     async (req: FastifyRequest<{ Params: { id: string } }>, reply) => {
-      const success = await database.models.hunt.findByIdAndDelete(
-        req.params.id
-      );
-
-      if (success) {
-        return getReasonPhrase(StatusCodes.OK);
-      }
-
-      return reply.status(StatusCodes.INTERNAL_SERVER_ERROR).send({
-        message: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR),
-      });
-    }
-  );
-
-  instance.post(
-    "/start",
-    async (req: FastifyRequest<{ Body: { hunt_id: string } }>, reply) => {
       try {
-        const result = await database.models.hunt.findByIdAndUpdate(
-          req.body.hunt_id,
-          { redeeming: true }
+        const result = await database.models.hunt.findByIdAndDelete(
+          req.params.id
         );
 
-        if (!result) {
-          throw Error("Error while updating " + req.body.hunt_id);
-        }
+        if (!result)
+          return reply.status(StatusCodes.NOT_FOUND).send({
+            message: getReasonPhrase(StatusCodes.NOT_FOUND),
+          });
 
-        return true;
-      } catch (e) {
-        console.error(e);
-        return reply.status(StatusCodes.INTERNAL_SERVER_ERROR).send({
+        return getReasonPhrase(StatusCodes.OK);
+      } catch (error) {
+        console.error(error);
+        reply.status(StatusCodes.INTERNAL_SERVER_ERROR).send({
           message: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR),
-          error: e,
+          error: error,
         });
       }
     }
   );
 
   instance.get("/", async (req: FastifyRequest<{ Body: { _id: string } }>) => {
-    var fixedHunts = [];
     var hunts = await database.models.hunt.find({ user_id: req.user._id });
 
-    for (let i = 0; i < hunts.length; i++) {
-      const element = hunts[i];
-
-      fixedHunts[i] = getFixedHuntData({
-        _id: element._id.toString(),
-        name: element.name,
-        start: element.start,
-        bonuses: element.bonuses,
-      });
-    }
-
-    return fixedHunts;
+    return hunts.map((v) =>
+      getFixedHuntData({
+        _id: v._id.toString(),
+        name: v.name,
+        start: v.start,
+        bonuses: v.bonuses,
+      })
+    );
   });
 
   instance.put(
     "/",
     async (
       req: FastifyRequest<{
-        Body: { hunt_id: string; bet: number; name: string };
+        Body: { hunt_id: string; start: number; name: string };
       }>,
       reply
     ) => {
       try {
         const result = await database.models.hunt.findByIdAndUpdate(
           req.body.hunt_id,
-          { bet: req.body.bet, name: req.body.name }
+          { start: req.body.start, name: req.body.name }
         );
 
         if (!result) {
-          throw Error("Error while updating " + req.body.hunt_id);
+          return reply.status(StatusCodes.NOT_FOUND).send({
+            message: getReasonPhrase(StatusCodes.NOT_FOUND),
+          });
         }
 
         return result;

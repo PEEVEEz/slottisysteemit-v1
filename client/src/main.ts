@@ -1,5 +1,6 @@
 import "./assets/main.css";
 import "vue-final-modal/style.css";
+import "vue-color-kit/dist/vue-color-kit.css";
 import "vue-toast-notification/dist/theme-bootstrap.css";
 
 import { createApp } from "vue";

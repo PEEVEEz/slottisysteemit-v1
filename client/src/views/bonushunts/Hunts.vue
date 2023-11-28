@@ -10,6 +10,7 @@ import Multiply from "@/components/icons/Multiply.vue";
 import DollarIcon from "@/components/icons/Dollar.vue";
 import TargetIcon from "@/components/icons/Target.vue";
 import CreateBonusHunt from "@/components/modals/CreateBonusHunt.vue";
+import PaintCanIcon from "@/components/icons/PaintCan.vue";
 
 const toast = useToast();
 const userStore = useUserStore();
@@ -49,7 +50,7 @@ const hunts = computed(() => {
   <div class="flex-1 w-full mt-5">
     <div class="flex flex-col sm:flex-row sm:gap-12 gap-6">
       <div
-        class="flex justify-between bg-[#1a1d21] md:w-1/3 w-full p-3 rounded"
+        class="flex justify-between bg-[#1a1d21]/50 md:w-1/3 w-full p-3 rounded"
       >
         <div>
           <h1 class="text-base text-white/70 font-medium mb-1 uppercase">
@@ -64,7 +65,7 @@ const hunts = computed(() => {
       </div>
 
       <div
-        class="flex justify-between bg-[#1a1d21] md:w-1/3 w-full p-3 rounded"
+        class="flex justify-between bg-[#1a1d21]/50 md:w-1/3 w-full p-3 rounded"
       >
         <div>
           <h1 class="text-base text-white/70 font-medium mb-1 uppercase">
@@ -79,7 +80,7 @@ const hunts = computed(() => {
       </div>
 
       <div
-        class="flex justify-between bg-[#1a1d21] md:w-1/3 w-full p-3 rounded"
+        class="flex justify-between bg-[#1a1d21]/50 md:w-1/3 w-full p-3 rounded"
       >
         <div>
           <h1 class="text-base text-white/70 font-medium mb-1 uppercase">
@@ -101,6 +102,14 @@ const hunts = computed(() => {
       <span class="text-xl font-medium">Bonus hunts</span>
 
       <div class="flex items-center gap-4">
+        <RouterLink
+          to="/hunts/theme"
+          class="flex items-center text-white/70 gap-2 hover:text-white"
+        >
+          <PaintCanIcon class="w-4" />
+          <span class="text-sm">Edit theme</span>
+        </RouterLink>
+
         <button
           @click="copyWidgetUrl()"
           class="flex items-center text-white/70 gap-2 hover:text-white"
@@ -111,7 +120,7 @@ const hunts = computed(() => {
 
         <button
           @click="openCreateHunt"
-          class="rounded text-sm text-white bg-[#1a1d21] px-3 py-1.5"
+          class="rounded text-sm text-white bg-[#1a1d21]/50 px-3 py-1.5"
         >
           New bonushunt
         </button>
@@ -123,7 +132,7 @@ const hunts = computed(() => {
       v-if="userStore.user"
     >
       <table class="w-full h-full text-sm text-left text-gray-500">
-        <thead class="text-xs text-white uppercase bg-[#1a1d21]">
+        <thead class="text-xs text-white uppercase bg-[#1a1d21]/50">
           <tr>
             <th scope="col" class="px-6 py-3">Name</th>
             <th scope="col" class="px-6 py-3">Start</th>

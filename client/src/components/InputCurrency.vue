@@ -23,7 +23,7 @@ const handlePress = () => {
       :value="props.value"
       @keyup.enter="handlePress()"
       type="number"
-      class="w-full bg-[#1a1d21] p-1.5 outline-none rounded"
+      class="w-full bg-[#1a1d21]/30 p-1.5 outline-none rounded"
     />
   </div>
 </template>

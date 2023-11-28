@@ -8,6 +8,7 @@ import { useUserStore } from "../stores/user";
 import OverlayIcon from "./icons/Overlay.vue";
 import SlotMachine from "./icons/SlotMachine.vue";
 import MenuIcon from "./icons/Menu.vue";
+import HelpIcon from "./icons/Help.vue";
 
 const userStore = useUserStore();
 const api_url = import.meta.env.VITE_API_URL;
@@ -27,7 +28,7 @@ const toggled = ref(false);
     </RouterLink>
 
     <div
-      class="flex flex-col md:items-center gap-7 transition-all text-white/80 z-50 fixed left-0 top-[4.5rem] p-4 md:p-0 bg-[#1a1d21] border border-white/5 w-full md:border-none md:bg-transparent md:static md:flex-row md:w-max"
+      class="flex flex-col md:items-center gap-7 transition-all text-white/80 z-50 fixed left-0 top-[4.5rem] p-4 md:p-0 bg-[#0e0f12] border border-white/5 w-full md:border-none md:bg-transparent md:static md:flex-row md:w-max"
       :class="{ 'md:flex left-[-70rem]': !toggled }"
     >
       <RouterLink
@@ -61,6 +62,16 @@ const toggled = ref(false);
 
       <RouterLink
         v-if="isLoggedIn"
+        to="/hunts"
+        @click="toggled = false"
+        class="flex items-center gap-2 hover:text-white"
+      >
+        <HelpIcon class="w-5" />
+        <span class="text-sm font-medium">Guess</span>
+      </RouterLink>
+
+      <RouterLink
+        v-if="isLoggedIn"
         to="/overlays"
         @click="toggled = false"
         class="flex items-center gap-2 hover:text-white"
@@ -69,7 +80,10 @@ const toggled = ref(false);
         <span class="text-sm font-medium">Overlays</span>
       </RouterLink>
 
-      <div v-if="userStore.user" class="flex items-center gap-3">
+      <div
+        v-if="userStore.user"
+        class="flex items-center gap-3 md:border-l md:pl-6 md:border-white/20 md:h-5"
+      >
         <img
           width="30"
           class="rounded-full"
