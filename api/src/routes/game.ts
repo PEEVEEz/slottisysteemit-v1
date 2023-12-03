@@ -17,7 +17,7 @@ export const registerGameRoutes = (
         const response = await fetch(url);
         const data = await response.json();
 
-        if (!data.data || !data.data.allGames || data.data.allGames <= 0) {
+        if (!data.data || !data.data.allGames || data.data.allGames.length <= 0) {
           return [req.query.name];
         }
 
