@@ -69,17 +69,6 @@ const toggled = ref(false);
         <HelpIcon class="w-5" />
         <span class="text-sm font-medium">Guess</span>
       </RouterLink>
-
-      <RouterLink
-        v-if="isLoggedIn"
-        to="/overlays"
-        @click="toggled = false"
-        class="flex items-center gap-2 hover:text-white"
-      >
-        <OverlayIcon class="w-5" />
-        <span class="text-sm font-medium">Overlays</span>
-      </RouterLink>
-
       <div
         v-if="userStore.user"
         class="flex items-center gap-3 md:border-l md:pl-6 md:border-white/20 md:h-5"
